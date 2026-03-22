@@ -8,15 +8,9 @@
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --bg:#0c0d0b;
-  --surface:#161816;
-  --surface2:#1e201e;
-  --border:rgba(255,255,255,0.08);
-  --text:#f0ede8;
-  --muted:#7a7975;
-  --lime:#c8f135;
-  --lime-dim:rgba(200,241,53,0.1);
-  --lime-border:rgba(200,241,53,0.25);
+  --bg:#0c0d0b;--surface:#161816;--surface2:#1e201e;
+  --border:rgba(255,255,255,0.08);--text:#f0ede8;--muted:#7a7975;
+  --lime:#c8f135;--lime-dim:rgba(200,241,53,0.1);--lime-border:rgba(200,241,53,0.25);
 }
 html,body{height:100%;overflow:hidden}
 body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);display:flex;flex-direction:column}
@@ -43,6 +37,15 @@ h1 em{font-style:italic;color:var(--lime)}
 .section-label{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:var(--lime);margin-bottom:20px}
 .section-title{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:42px;line-height:1;margin-bottom:8px}
 .section-sub{font-size:14px;color:var(--muted);font-weight:300;margin-bottom:32px;line-height:1.5}
+.field-block{margin-bottom:20px}
+.field-label{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
+.field-input{width:100%;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:14px 16px;color:var(--text);font-family:'DM Mono',monospace;font-size:13px;outline:none;transition:border-color 0.2s;letter-spacing:0.04em}
+.field-input:focus{border-color:var(--lime-border)}
+.field-input::placeholder{color:var(--muted)}
+.key-note{font-size:12px;color:var(--muted);line-height:1.6;margin-top:10px}
+.key-note a{color:var(--lime);text-decoration:none}
+.key-note a:hover{text-decoration:underline}
+.key-stored{font-family:'DM Mono',monospace;font-size:11px;color:var(--lime);margin-top:8px;display:none}
 .crew-list{display:flex;flex-direction:column;gap:12px}
 .crew-row{display:flex;gap:10px;align-items:center}
 .crew-row input{flex:1;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:14px 16px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:15px;outline:none;transition:border-color 0.2s}
@@ -68,7 +71,7 @@ input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;bac
 @keyframes spin{to{transform:rotate(360deg)}}
 .loading-msg{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:28px;color:var(--muted);letter-spacing:0.02em;transition:opacity 0.4s}
 .results-grid{display:flex;flex-direction:column;gap:16px}
-.activity-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px;cursor:pointer;transition:border-color 0.2s,background 0.2s}
+.activity-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px;transition:border-color 0.2s}
 .activity-card:hover{border-color:var(--lime-border)}
 .card-header{display:flex;align-items:flex-start;gap:12px;margin-bottom:12px}
 .card-badge{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:0.1em;text-transform:uppercase;padding:3px 8px;border-radius:3px;flex-shrink:0;margin-top:2px}
@@ -85,7 +88,7 @@ input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;bac
 .bring-label{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:0.08em;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
 .bring-list{display:flex;flex-wrap:wrap;gap:6px}
 .bring-chip{font-size:12px;padding:4px 10px;background:var(--surface2);border-radius:4px;color:rgba(240,237,232,0.7)}
-.pick-btn{width:100%;margin-top:14px;padding:14px;background:var(--lime);border:none;border-radius:6px;font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:18px;letter-spacing:0.05em;color:#0c0d0b;cursor:pointer;transition:transform 0.1s,opacity 0.1s}
+.pick-btn{width:100%;margin-top:14px;padding:14px;background:var(--lime);border:none;border-radius:6px;font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:18px;letter-spacing:0.05em;color:#0c0d0b;cursor:pointer;transition:transform 0.1s}
 .pick-btn:active{transform:scale(0.98)}
 .recap-chosen{background:var(--surface);border:1px solid var(--lime-border);border-radius:12px;padding:20px;margin-bottom:24px}
 .chosen-label{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--lime);margin-bottom:6px}
@@ -96,16 +99,37 @@ input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;bac
 .recap-name{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:18px;margin-bottom:10px;color:var(--text)}
 .recap-msg{font-size:14px;line-height:1.7;color:rgba(240,237,232,0.85);white-space:pre-wrap;font-weight:300}
 .copy-btn{margin-top:12px;padding:10px 16px;background:transparent;border:1px solid var(--border);border-radius:6px;color:var(--muted);font-family:'DM Mono',monospace;font-size:11px;letter-spacing:0.06em;cursor:pointer;transition:border-color 0.2s,color 0.2s;width:100%}
-.copy-btn:hover{border-color:var(--lime-border);color:var(--lime)}
-.copy-btn.copied{border-color:var(--lime-border);color:var(--lime)}
+.copy-btn:hover,.copy-btn.copied{border-color:var(--lime-border);color:var(--lime)}
 .start-over{text-align:center;padding:24px;font-size:13px;color:var(--muted);cursor:pointer;text-decoration:underline;text-underline-offset:3px}
 .start-over:hover{color:var(--text)}
 .error-msg{background:rgba(245,107,78,0.1);border:1px solid rgba(245,107,78,0.25);border-radius:8px;padding:14px 16px;font-size:13px;color:#f56b4e;margin-top:16px;display:none}
+.change-key{font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);text-decoration:underline;text-underline-offset:3px;cursor:pointer;display:block;text-align:center;margin-top:16px}
+.change-key:hover{color:var(--lime)}
 </style>
 </head>
 <body>
 
-<div class="screen active" id="screen-landing">
+<!-- API KEY -->
+<div class="screen active" id="screen-apikey">
+  <nav class="nav"><span class="nav-logo">SORTED</span><span class="nav-step">Setup</span></nav>
+  <div class="content">
+    <div class="section-label">One Time Setup</div>
+    <div class="section-title">DROP YOUR KEY.</div>
+    <p class="section-sub">SORTED runs on the Anthropic API. Paste your key below — it stays in your browser for this session only, never sent anywhere except Anthropic.</p>
+    <div class="field-block">
+      <div class="field-label">Anthropic API Key</div>
+      <input type="password" class="field-input" id="api-key-input" placeholder="sk-ant-..." autocomplete="off">
+      <p class="key-note">Get a key at <a href="https://console.anthropic.com" target="_blank">console.anthropic.com</a>. Takes 2 minutes. Free trial credits included.</p>
+    </div>
+    <div class="error-msg" id="key-error">Enter a valid API key starting with sk-ant-</div>
+  </div>
+  <div class="cta-bar">
+    <button class="btn" onclick="saveKey()">LET'S GO</button>
+  </div>
+</div>
+
+<!-- LANDING -->
+<div class="screen" id="screen-landing">
   <nav class="nav"><span class="nav-logo">SORTED</span><span class="nav-step">Sunday Protocol</span></nav>
   <div class="hero">
     <div class="eyebrow">Guys Day Out Planner</div>
@@ -120,9 +144,11 @@ input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;bac
   </div>
   <div class="cta-bar">
     <button class="btn" onclick="goTo('screen-crew')">BUILD THE LINEUP</button>
+    <span class="change-key" onclick="goTo('screen-apikey')">Change API key</span>
   </div>
 </div>
 
+<!-- CREW -->
 <div class="screen" id="screen-crew">
   <nav class="nav"><span class="nav-logo">SORTED</span><span class="nav-step">01 / 03 — CREW</span></nav>
   <div class="content">
@@ -139,6 +165,7 @@ input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;bac
   </div>
 </div>
 
+<!-- VIBE -->
 <div class="screen" id="screen-vibe">
   <nav class="nav"><span class="nav-logo">SORTED</span><span class="nav-step">02 / 03 — VIBE</span></nav>
   <div class="content">
@@ -179,11 +206,13 @@ input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;bac
   </div>
 </div>
 
+<!-- LOADING -->
 <div class="screen loading-screen" id="screen-loading">
   <div class="spinner"></div>
   <div class="loading-msg" id="loading-msg">Consulting the Sunday oracle...</div>
 </div>
 
+<!-- RESULTS -->
 <div class="screen" id="screen-results">
   <nav class="nav"><span class="nav-logo">SORTED</span><span class="nav-step">03 / 03 — PICK ONE</span></nav>
   <div class="content">
@@ -194,11 +223,13 @@ input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;bac
   </div>
 </div>
 
+<!-- RECAP LOADING -->
 <div class="screen loading-screen" id="screen-recap-loading">
   <div class="spinner"></div>
   <div class="loading-msg">Writing recaps for the crew...</div>
 </div>
 
+<!-- RECAP -->
 <div class="screen" id="screen-recap">
   <nav class="nav"><span class="nav-logo">SORTED</span><span class="nav-step">LOCKED IN</span></nav>
   <div class="content">
@@ -218,7 +249,17 @@ const costLabels=['Free.99','Pocket Change','Normal People Budget','Treat Yourse
 const loadingMsgs=['Consulting the Sunday oracle...','Rejecting lame suggestions...','Scanning the vibe coordinates...','Running it past the boys...','Eliminating anything with a required waiver...'];
 let msgInterval,activities=[],attendees=[],selectedActivity=null;
 
+function getKey(){return sessionStorage.getItem('sorted_key')||''}
 function goTo(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active')}
+
+function saveKey(){
+  const k=document.getElementById('api-key-input').value.trim();
+  const err=document.getElementById('key-error');
+  if(!k.startsWith('sk-ant-')){err.style.display='block';return}
+  err.style.display='none';
+  sessionStorage.setItem('sorted_key',k);
+  goTo('screen-landing');
+}
 
 function addAttendee(name='',contact=''){
   const list=document.getElementById('crew-list');
@@ -230,9 +271,7 @@ function addAttendee(name='',contact=''){
 }
 
 function removeRow(btn){if(document.getElementById('crew-list').children.length<=1)return;btn.closest('.crew-row').remove();syncAttendees()}
-
 function syncAttendees(){attendees=[];document.querySelectorAll('#crew-list .crew-row').forEach(row=>{const inputs=row.querySelectorAll('input');attendees.push({name:inputs[0].value.trim(),contact:inputs[1].value.trim()})})}
-
 function validateCrew(){syncAttendees();const valid=attendees.filter(a=>a.name);const err=document.getElementById('crew-error');if(!valid.length){err.style.display='block';return}err.style.display='none';goTo('screen-vibe')}
 
 function updateSliders(){
@@ -247,6 +286,22 @@ function updateSliders(){
 
 function cycleLoadingMsg(el){let i=0;if(msgInterval)clearInterval(msgInterval);el.textContent=loadingMsgs[0];msgInterval=setInterval(()=>{i=(i+1)%loadingMsgs.length;el.style.opacity='0';setTimeout(()=>{el.textContent=loadingMsgs[i];el.style.opacity='1'},400)},2200)}
 
+async function callAPI(prompt,maxTokens){
+  const res=await fetch('https://api.anthropic.com/v1/messages',{
+    method:'POST',
+    headers:{
+      'Content-Type':'application/json',
+      'x-api-key':getKey(),
+      'anthropic-version':'2023-06-01',
+      'anthropic-dangerous-direct-browser-access':'true'
+    },
+    body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:maxTokens,messages:[{role:'user',content:prompt}]})
+  });
+  if(!res.ok){const e=await res.json();throw new Error(e.error?.message||res.statusText)}
+  const data=await res.json();
+  return data.content[0].text;
+}
+
 async function generateActivities(){
   syncAttendees();
   const a=+document.getElementById('slider-adventure').value;
@@ -257,14 +312,16 @@ async function generateActivities(){
   cycleLoadingMsg(document.getElementById('loading-msg'));
   const prompt=`You are the ultimate guys day out planner. Generate exactly 3 Sunday morning/afternoon activity ideas.\n\nSettings:\n- Adventure Level: ${a}/5 (${adventureLabels[a-1]})\n- Risk Level: ${r}/5 (${riskLabels[r-1]})\n- Budget: ${c}/5 (${costLabels[c-1]})\n- Group size: ${validCrew.length} guys\n\nReturn ONLY a valid JSON array with exactly 3 objects. Each object must have:\n- "name": string (fun activity name, 2-5 words)\n- "tagline": string (one punchy sentence, 10 words max)\n- "description": string (2-3 sentences)\n- "whatToBring": array of 3-5 short strings\n- "bestTimeToStart": string like "8:30 AM"\n- "duration": string like "3-4 hours"\n- "estimatedCost": string like "$20-40/person" or "Free"\n- "wildCard": boolean (true for exactly one - the unexpected option)\n\nMake them specific and real. Vary them meaningfully. These are adult men on a Sunday morning.`;
   try{
-    const res=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1000,messages:[{role:'user',content:prompt}]})});
-    const data=await res.json();
-    const text=data.content[0].text.replace(/```json|```/g,'').trim();
-    activities=JSON.parse(text);
+    const text=await callAPI(prompt,1000);
+    activities=JSON.parse(text.replace(/```json|```/g,'').trim());
     clearInterval(msgInterval);
     renderResults();
     goTo('screen-results');
-  }catch(e){clearInterval(msgInterval);alert('Something went wrong. Check the API connection and try again.');goTo('screen-vibe')}
+  }catch(e){
+    clearInterval(msgInterval);
+    if(e.message&&e.message.includes('auth')){sessionStorage.removeItem('sorted_key');alert('API key rejected. Re-enter your key.');goTo('screen-apikey');}
+    else{alert('Something went wrong: '+e.message);goTo('screen-vibe');}
+  }
 }
 
 function renderResults(){
@@ -287,13 +344,11 @@ async function pickActivity(idx){
   const r=+document.getElementById('slider-risk').value;
   const prompt=`Generate personalized Sunday plan recap messages for a group of guys.\n\nActivity: ${selectedActivity.name}\nDescription: ${selectedActivity.description}\nMeet: ${selectedActivity.bestTimeToStart}\nDuration: ${selectedActivity.duration}\nCost: ${selectedActivity.estimatedCost}\nBring: ${selectedActivity.whatToBring.join(', ')}\nAdventure level: ${a}/5 (${adventureLabels[a-1]})\nRisk level: ${r}/5 (${riskLabels[r-1]})\nAttendees: ${validCrew.map(a=>a.name).join(', ')}\n\nReturn ONLY a valid JSON array with one object per attendee:\n- "name": their name\n- "message": a casual text message they would receive. Mention their name. Include what's happening, when to show up, what to bring, ends with hype. Under 160 words. Write like a friend texting, not a business email.`;
   try{
-    const res=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1200,messages:[{role:'user',content:prompt}]})});
-    const data=await res.json();
-    const text=data.content[0].text.replace(/```json|```/g,'').trim();
-    const recaps=JSON.parse(text);
+    const text=await callAPI(prompt,1200);
+    const recaps=JSON.parse(text.replace(/```json|```/g,'').trim());
     renderRecap(recaps);
     goTo('screen-recap');
-  }catch(e){alert('Error generating recaps. Try again.');goTo('screen-results')}
+  }catch(e){alert('Error generating recaps: '+e.message);goTo('screen-results')}
 }
 
 function renderRecap(recaps){
@@ -313,6 +368,8 @@ function copyRecap(btn,text){navigator.clipboard.writeText(text).then(()=>{btn.t
 
 function startOver(){document.getElementById('crew-list').innerHTML='';addAttendee();document.getElementById('slider-adventure').value=3;document.getElementById('slider-risk').value=2;document.getElementById('slider-cost').value=2;updateSliders();activities=[];selectedActivity=null;attendees=[];goTo('screen-landing')}
 
+// Init: skip key screen if already set
+if(getKey()){goTo('screen-landing')}
 addAttendee();
 updateSliders();
 </script>
