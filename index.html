@@ -16,9 +16,9 @@
   --radius:6px;
 }
 html,body{height:100%;background:var(--white)}
-body{font-family:'Outfit',sans-serif;color:var(--black);display:flex;flex-direction:column;overflow:hidden}
+body{font-family:'Outfit',sans-serif;color:var(--black);display:flex;flex-direction:column;}
 
-.screen{display:none;flex-direction:column;height:100vh;overflow-y:auto}
+.screen{display:none;flex-direction:column;min-height:100vh;overflow-y:auto}
 .screen.active{display:flex}
 @keyframes popIn{from{opacity:0;transform:scale(0.97)}to{opacity:1;transform:none}}
 .screen.active{animation:popIn 0.2s ease}
@@ -30,14 +30,14 @@ body{font-family:'Outfit',sans-serif;color:var(--black);display:flex;flex-direct
 .nav-pill{font-family:'Space Mono',monospace;font-size:10px;padding:5px 12px;border:2px solid var(--black);border-radius:20px;letter-spacing:0.05em;background:var(--yellow)}
 
 /* HERO */
-.hero{flex:1;display:flex;flex-direction:column;padding:32px 24px;position:relative;overflow:hidden}
+.hero{flex:1;display:flex;flex-direction:column;padding:32px 24px 48px;position:relative;}
 .hero-bg{position:absolute;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 39px,var(--black) 39px,var(--black) 40px),repeating-linear-gradient(90deg,transparent,transparent 39px,var(--black) 39px,var(--black) 40px);opacity:0.04;pointer-events:none}
 .hero-inner{position:relative;z-index:1;display:flex;flex-direction:column;flex:1}
 .hero-tag{display:inline-flex;align-items:center;gap:8px;font-family:'Space Mono',monospace;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:20px}
 .hero-tag-dot{width:8px;height:8px;border-radius:50%;background:var(--orange)}
-h1{font-family:'Bebas Neue',cursive;font-size:clamp(80px,18vw,130px);line-height:0.88;letter-spacing:0.02em;color:var(--black);margin-bottom:8px}
+h1{font-family:'Bebas Neue',cursive;font-size:clamp(48px,8vw,88px);line-height:0.88;letter-spacing:0.02em;color:var(--black);margin-bottom:8px}
 h1 .highlight{color:var(--orange);display:block}
-.hero-sub{font-size:15px;color:#444;max-width:340px;line-height:1.6;font-weight:400;margin-top:16px}
+.hero-sub{font-family:'Outfit',sans-serif;font-size:16px;color:#555;line-height:1.6;font-weight:400;max-width:520px;margin:16px 0 24px;}
 .feature-chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:24px}
 .chip{font-family:'Space Mono',monospace;font-size:10px;padding:7px 14px;border:2px solid var(--black);border-radius:4px;letter-spacing:0.05em;background:var(--white);font-weight:700}
 .chip.orange{background:var(--orange);color:var(--white);border-color:var(--orange)}
@@ -144,7 +144,7 @@ input[type=range]::-moz-range-thumb{width:24px;height:24px;border-radius:50%;bac
 <div class="hero-inner">
 <div class="hero-tag"><span class="hero-tag-dot"></span>Guys Day Out Planner</div>
 <h1>STOP<br>ASKING<br><span class="highlight">THE<br>GROUP<br>CHAT.</span></h1>
-<p class="hero-sub">Drop your city, set your vibe, and get three real places to go — with what to bring and a text you can copy straight into the thread.</p>
+<p class="hero-sub">Tell us where you are, how wild you want to get, and what you're willing to spend. We'll pick three real venues — TopGolf, go-karts, axe throwing, escape rooms — and write a personalized text for each person in the crew.</p>
 <div class="feature-chips">
 <span class="chip orange">Real Venues</span>
 <span class="chip">Adventure Level</span>
