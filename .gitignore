@@ -1,0 +1,4 @@
+.wrangler/
+index.html.bak
+worker.js
+wrangler.toml
