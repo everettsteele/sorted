@@ -7,11 +7,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,400;0,700;0,900;1,900&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{
-  --bg:#0c0d0b;--surface:#161816;--surface2:#1e201e;
-  --border:rgba(255,255,255,0.08);--text:#f0ede8;--muted:#7a7975;
-  --lime:#c8f135;--lime-dim:rgba(200,241,53,0.1);--lime-border:rgba(200,241,53,0.25);
-}
+:root{--bg:#0c0d0b;--surface:#161816;--surface2:#1e201e;--border:rgba(255,255,255,0.08);--text:#f0ede8;--muted:#7a7975;--lime:#c8f135;--lime-dim:rgba(200,241,53,0.1);--lime-border:rgba(200,241,53,0.25)}
 html,body{height:100%;overflow:hidden}
 body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);display:flex;flex-direction:column}
 .screen{display:none;flex-direction:column;height:100vh;overflow-y:auto;animation:fadeIn 0.35s ease}
@@ -28,48 +24,36 @@ h1 em{font-style:italic;color:var(--lime)}
 .hero-tags{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:32px}
 .tag{font-family:'DM Mono',monospace;font-size:11px;padding:6px 14px;border-radius:4px;border:1px solid var(--border);color:var(--muted);letter-spacing:0.06em}
 .cta-bar{padding:28px;flex-shrink:0}
-.btn{width:100%;padding:18px;background:var(--lime);border:none;border-radius:8px;font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:22px;letter-spacing:0.06em;color:#0c0d0b;cursor:pointer;transition:transform 0.1s,opacity 0.1s}
+.btn{width:100%;padding:18px;background:var(--lime);border:none;border-radius:8px;font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:22px;letter-spacing:0.06em;color:#0c0d0b;cursor:pointer;transition:transform 0.1s}
 .btn:active{transform:scale(0.98)}
-.btn:disabled{opacity:0.4;cursor:not-allowed}
 .btn-ghost{background:transparent;border:1px solid var(--border);color:var(--muted);font-size:16px;font-family:'DM Sans',sans-serif;font-weight:400;letter-spacing:0;margin-top:12px}
 .btn-ghost:hover{border-color:rgba(255,255,255,0.2);color:var(--text)}
 .content{flex:1;padding:28px;overflow-y:auto}
 .section-label{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:var(--lime);margin-bottom:20px}
 .section-title{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:42px;line-height:1;margin-bottom:8px}
 .section-sub{font-size:14px;color:var(--muted);font-weight:300;margin-bottom:32px;line-height:1.5}
-.field-block{margin-bottom:20px}
-.field-label{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
-.field-input{width:100%;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:14px 16px;color:var(--text);font-family:'DM Mono',monospace;font-size:13px;outline:none;transition:border-color 0.2s;letter-spacing:0.04em}
-.field-input:focus{border-color:var(--lime-border)}
-.field-input::placeholder{color:var(--muted)}
-.key-note{font-size:12px;color:var(--muted);line-height:1.6;margin-top:10px}
-.key-note a{color:var(--lime);text-decoration:none}
-.key-note a:hover{text-decoration:underline}
-.key-stored{font-family:'DM Mono',monospace;font-size:11px;color:var(--lime);margin-top:8px;display:none}
 .crew-list{display:flex;flex-direction:column;gap:12px}
 .crew-row{display:flex;gap:10px;align-items:center}
 .crew-row input{flex:1;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:14px 16px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:15px;outline:none;transition:border-color 0.2s}
 .crew-row input:focus{border-color:var(--lime-border)}
 .crew-row input::placeholder{color:var(--muted)}
-.remove-btn{width:40px;height:40px;border-radius:6px;background:var(--surface2);border:1px solid var(--border);color:var(--muted);font-size:18px;cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:color 0.2s}
-.remove-btn:hover{color:var(--text)}
-.add-crew-btn{margin-top:8px;width:100%;padding:14px;background:transparent;border:1px dashed rgba(200,241,53,0.2);border-radius:8px;color:var(--lime);font-family:'DM Mono',monospace;font-size:12px;letter-spacing:0.08em;cursor:pointer;transition:border-color 0.2s,background 0.2s}
-.add-crew-btn:hover{border-color:var(--lime-border);background:var(--lime-dim)}
+.remove-btn{width:40px;height:40px;border-radius:6px;background:var(--surface2);border:1px solid var(--border);color:var(--muted);font-size:18px;cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center}
+.add-crew-btn{margin-top:8px;width:100%;padding:14px;background:transparent;border:1px dashed rgba(200,241,53,0.2);border-radius:8px;color:var(--lime);font-family:'DM Mono',monospace;font-size:12px;letter-spacing:0.08em;cursor:pointer}
 .slider-block{margin-bottom:36px}
 .slider-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:16px}
-.slider-name{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:20px;letter-spacing:0.02em}
-.slider-val{font-family:'DM Mono',monospace;font-size:11px;color:var(--lime);text-align:right;line-height:1.4;max-width:160px}
+.slider-name{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:20px}
+.slider-val{font-family:'DM Mono',monospace;font-size:11px;color:var(--lime);text-align:right}
 input[type=range]{-webkit-appearance:none;width:100%;height:4px;background:var(--surface2);border-radius:2px;outline:none;cursor:pointer}
 input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:22px;height:22px;border-radius:50%;background:var(--lime);cursor:pointer;border:3px solid var(--bg)}
 input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;background:var(--lime);cursor:pointer;border:3px solid var(--bg)}
 .slider-labels{display:flex;justify-content:space-between;margin-top:8px}
-.slider-labels span{font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);letter-spacing:0.04em}
+.slider-labels span{font-family:'DM Mono',monospace;font-size:10px;color:var(--muted)}
 .vibe-preview{margin-top:24px;padding:16px;background:var(--surface);border:1px solid var(--border);border-radius:8px;font-size:14px;color:var(--muted);line-height:1.6}
 .vibe-preview strong{color:var(--text)}
 .loading-screen{align-items:center;justify-content:center;text-align:center;gap:20px}
 .spinner{width:48px;height:48px;border:3px solid var(--surface2);border-top-color:var(--lime);border-radius:50%;animation:spin 0.8s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
-.loading-msg{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:28px;color:var(--muted);letter-spacing:0.02em;transition:opacity 0.4s}
+.loading-msg{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:28px;color:var(--muted);transition:opacity 0.4s}
 .results-grid{display:flex;flex-direction:column;gap:16px}
 .activity-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px;transition:border-color 0.2s}
 .activity-card:hover{border-color:var(--lime-border)}
@@ -78,7 +62,7 @@ input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;bac
 .badge-wild{background:rgba(245,107,78,0.15);color:#f56b4e;border:1px solid rgba(245,107,78,0.25)}
 .badge-solid{background:var(--lime-dim);color:var(--lime);border:1px solid var(--lime-border)}
 .card-name{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:28px;line-height:1;flex:1}
-.card-tagline{font-size:13px;color:var(--muted);margin-bottom:12px;font-weight:300;line-height:1.5}
+.card-tagline{font-size:13px;color:var(--muted);margin-bottom:12px;font-weight:300}
 .card-desc{font-size:14px;color:rgba(240,237,232,0.8);line-height:1.6;margin-bottom:16px}
 .card-meta{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 .meta-item{background:var(--surface2);border-radius:6px;padding:10px 12px}
@@ -88,7 +72,7 @@ input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;bac
 .bring-label{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:0.08em;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
 .bring-list{display:flex;flex-wrap:wrap;gap:6px}
 .bring-chip{font-size:12px;padding:4px 10px;background:var(--surface2);border-radius:4px;color:rgba(240,237,232,0.7)}
-.pick-btn{width:100%;margin-top:14px;padding:14px;background:var(--lime);border:none;border-radius:6px;font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:18px;letter-spacing:0.05em;color:#0c0d0b;cursor:pointer;transition:transform 0.1s}
+.pick-btn{width:100%;margin-top:14px;padding:14px;background:var(--lime);border:none;border-radius:6px;font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:18px;color:#0c0d0b;cursor:pointer;transition:transform 0.1s}
 .pick-btn:active{transform:scale(0.98)}
 .recap-chosen{background:var(--surface);border:1px solid var(--lime-border);border-radius:12px;padding:20px;margin-bottom:24px}
 .chosen-label{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--lime);margin-bottom:6px}
@@ -98,280 +82,64 @@ input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;bac
 .recap-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:16px}
 .recap-name{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:18px;margin-bottom:10px;color:var(--text)}
 .recap-msg{font-size:14px;line-height:1.7;color:rgba(240,237,232,0.85);white-space:pre-wrap;font-weight:300}
-.copy-btn{margin-top:12px;padding:10px 16px;background:transparent;border:1px solid var(--border);border-radius:6px;color:var(--muted);font-family:'DM Mono',monospace;font-size:11px;letter-spacing:0.06em;cursor:pointer;transition:border-color 0.2s,color 0.2s;width:100%}
+.copy-btn{margin-top:12px;padding:10px 16px;background:transparent;border:1px solid var(--border);border-radius:6px;color:var(--muted);font-family:'DM Mono',monospace;font-size:11px;cursor:pointer;width:100%}
 .copy-btn:hover,.copy-btn.copied{border-color:var(--lime-border);color:var(--lime)}
-.start-over{text-align:center;padding:24px;font-size:13px;color:var(--muted);cursor:pointer;text-decoration:underline;text-underline-offset:3px}
-.start-over:hover{color:var(--text)}
+.start-over{text-align:center;padding:24px;font-size:13px;color:var(--muted);cursor:pointer;text-decoration:underline}
 .error-msg{background:rgba(245,107,78,0.1);border:1px solid rgba(245,107,78,0.25);border-radius:8px;padding:14px 16px;font-size:13px;color:#f56b4e;margin-top:16px;display:none}
-.change-key{font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);text-decoration:underline;text-underline-offset:3px;cursor:pointer;display:block;text-align:center;margin-top:16px}
-.change-key:hover{color:var(--lime)}
 </style>
 </head>
 <body>
-
-<!-- API KEY -->
-<div class="screen active" id="screen-apikey">
-  <nav class="nav"><span class="nav-logo">SORTED</span><span class="nav-step">Setup</span></nav>
-  <div class="content">
-    <div class="section-label">One Time Setup</div>
-    <div class="section-title">DROP YOUR KEY.</div>
-    <p class="section-sub">SORTED runs on the Anthropic API. Paste your key below — it stays in your browser for this session only, never sent anywhere except Anthropic.</p>
-    <div class="field-block">
-      <div class="field-label">Anthropic API Key</div>
-      <input type="password" class="field-input" id="api-key-input" placeholder="sk-ant-..." autocomplete="off">
-      <p class="key-note">Get a key at <a href="https://console.anthropic.com" target="_blank">console.anthropic.com</a>. Takes 2 minutes. Free trial credits included.</p>
-    </div>
-    <div class="error-msg" id="key-error">Enter a valid API key starting with sk-ant-</div>
-  </div>
-  <div class="cta-bar">
-    <button class="btn" onclick="saveKey()">LET'S GO</button>
-  </div>
+<div class="screen active" id="screen-landing">
+<nav class="nav"><span class="nav-logo">SORTED</span><span class="nav-step">Sunday Protocol</span></nav>
+<div class="hero"><div class="eyebrow">Guys Day Out Planner</div><h1>STOP<br><em>TEXTING</em><br>THE<br>GROUP<br>CHAT.</h1><p class="hero-sub">Tell us your vibe. We'll pick the activity, brief the crew, and get everyone on the same page before noon.</p><div class="hero-tags"><span class="tag">Adventure Level</span><span class="tag">Risk Tolerance</span><span class="tag">Budget Range</span><span class="tag">Crew Recap</span></div></div>
+<div class="cta-bar"><button class="btn" onclick="goTo('screen-crew')">BUILD THE LINEUP</button></div>
 </div>
-
-<!-- LANDING -->
-<div class="screen" id="screen-landing">
-  <nav class="nav"><span class="nav-logo">SORTED</span><span class="nav-step">Sunday Protocol</span></nav>
-  <div class="hero">
-    <div class="eyebrow">Guys Day Out Planner</div>
-    <h1>STOP<br><em>TEXTING</em><br>THE<br>GROUP<br>CHAT.</h1>
-    <p class="hero-sub">Tell us your vibe. We'll pick the activity, brief the crew, and get everyone on the same page before noon.</p>
-    <div class="hero-tags">
-      <span class="tag">Adventure Level</span>
-      <span class="tag">Risk Tolerance</span>
-      <span class="tag">Budget Range</span>
-      <span class="tag">Crew Recap</span>
-    </div>
-  </div>
-  <div class="cta-bar">
-    <button class="btn" onclick="goTo('screen-crew')">BUILD THE LINEUP</button>
-    <span class="change-key" onclick="goTo('screen-apikey')">Change API key</span>
-  </div>
-</div>
-
-<!-- CREW -->
 <div class="screen" id="screen-crew">
-  <nav class="nav"><span class="nav-logo">SORTED</span><span class="nav-step">01 / 03 — CREW</span></nav>
-  <div class="content">
-    <div class="section-label">The Crew</div>
-    <div class="section-title">WHO'S IN?</div>
-    <p class="section-sub">Add everyone joining. We'll write them a personalized recap when you lock in the plan.</p>
-    <div class="crew-list" id="crew-list"></div>
-    <button class="add-crew-btn" onclick="addAttendee()">+ ADD ANOTHER</button>
-    <div class="error-msg" id="crew-error">Add at least one name to continue.</div>
-  </div>
-  <div class="cta-bar">
-    <button class="btn" onclick="validateCrew()">SET THE VIBE</button>
-    <button class="btn btn-ghost" onclick="goTo('screen-landing')">BACK</button>
-  </div>
+<nav class="nav"><span class="nav-logo">SORTED</span><span class="nav-step">01 / 03 — CREW</span></nav>
+<div class="content"><div class="section-label">The Crew</div><div class="section-title">WHO'S IN?</div><p class="section-sub">Add everyone joining. We'll write them a personalized recap when you lock in the plan.</p><div class="crew-list" id="crew-list"></div><button class="add-crew-btn" onclick="addAttendee()">+ ADD ANOTHER</button><div class="error-msg" id="crew-error">Add at least one name to continue.</div></div>
+<div class="cta-bar"><button class="btn" onclick="validateCrew()">SET THE VIBE</button><button class="btn btn-ghost" onclick="goTo('screen-landing')">BACK</button></div>
 </div>
-
-<!-- VIBE -->
 <div class="screen" id="screen-vibe">
-  <nav class="nav"><span class="nav-logo">SORTED</span><span class="nav-step">02 / 03 — VIBE</span></nav>
-  <div class="content">
-    <div class="section-label">Set the Vibe</div>
-    <div class="section-title">WHAT ARE WE DOING?</div>
-    <p class="section-sub">Dial in your settings. We'll find something that fits.</p>
-    <div class="slider-block">
-      <div class="slider-header">
-        <span class="slider-name">Adventure Level</span>
-        <span class="slider-val" id="adventure-label">Good Vibes</span>
-      </div>
-      <input type="range" min="1" max="5" value="3" id="slider-adventure" oninput="updateSliders()">
-      <div class="slider-labels"><span>Couch Mode</span><span>Absolute Chaos</span></div>
-    </div>
-    <div class="slider-block">
-      <div class="slider-header">
-        <span class="slider-name">Risk Level</span>
-        <span class="slider-val" id="risk-label">Minor Scrapes Possible</span>
-      </div>
-      <input type="range" min="1" max="5" value="2" id="slider-risk" oninput="updateSliders()">
-      <div class="slider-labels"><span>Pillow Fort Safe</span><span>Call Your Mom</span></div>
-    </div>
-    <div class="slider-block">
-      <div class="slider-header">
-        <span class="slider-name">Budget</span>
-        <span class="slider-val" id="cost-label">Pocket Change</span>
-      </div>
-      <input type="range" min="1" max="5" value="2" id="slider-cost" oninput="updateSliders()">
-      <div class="slider-labels"><span>Free.99</span><span>Don't Tell Her</span></div>
-    </div>
-    <div class="vibe-preview" id="vibe-preview">
-      You want <strong>Good Vibes</strong> with <strong>Minor Scrapes Possible</strong> at a <strong>Pocket Change</strong> budget. That works.
-    </div>
-  </div>
-  <div class="cta-bar">
-    <button class="btn" onclick="generateActivities()">FIND OUR SUNDAY</button>
-    <button class="btn btn-ghost" onclick="goTo('screen-crew')">BACK</button>
-  </div>
+<nav class="nav"><span class="nav-logo">SORTED</span><span class="nav-step">02 / 03 — VIBE</span></nav>
+<div class="content"><div class="section-label">Set the Vibe</div><div class="section-title">WHAT ARE WE DOING?</div><p class="section-sub">Dial in your settings. We'll find something that fits.</p>
+<div class="slider-block"><div class="slider-header"><span class="slider-name">Adventure Level</span><span class="slider-val" id="adventure-label">Good Vibes</span></div><input type="range" min="1" max="5" value="3" id="slider-adventure" oninput="updateSliders()"><div class="slider-labels"><span>Couch Mode</span><span>Absolute Chaos</span></div></div>
+<div class="slider-block"><div class="slider-header"><span class="slider-name">Risk Level</span><span class="slider-val" id="risk-label">Minor Scrapes Possible</span></div><input type="range" min="1" max="5" value="2" id="slider-risk" oninput="updateSliders()"><div class="slider-labels"><span>Pillow Fort Safe</span><span>Call Your Mom</span></div></div>
+<div class="slider-block"><div class="slider-header"><span class="slider-name">Budget</span><span class="slider-val" id="cost-label">Pocket Change</span></div><input type="range" min="1" max="5" value="2" id="slider-cost" oninput="updateSliders()"><div class="slider-labels"><span>Free.99</span><span>Don't Tell Her</span></div></div>
+<div class="vibe-preview" id="vibe-preview">You want <strong>Good Vibes</strong> with <strong>Minor Scrapes Possible</strong> at a <strong>Pocket Change</strong> budget. That works.</div></div>
+<div class="cta-bar"><button class="btn" onclick="generateActivities()">FIND OUR SUNDAY</button><button class="btn btn-ghost" onclick="goTo('screen-crew')">BACK</button></div>
 </div>
-
-<!-- LOADING -->
-<div class="screen loading-screen" id="screen-loading">
-  <div class="spinner"></div>
-  <div class="loading-msg" id="loading-msg">Consulting the Sunday oracle...</div>
-</div>
-
-<!-- RESULTS -->
+<div class="screen loading-screen" id="screen-loading"><div class="spinner"></div><div class="loading-msg" id="loading-msg">Consulting the Sunday oracle...</div></div>
 <div class="screen" id="screen-results">
-  <nav class="nav"><span class="nav-logo">SORTED</span><span class="nav-step">03 / 03 — PICK ONE</span></nav>
-  <div class="content">
-    <div class="section-label">The Options</div>
-    <div class="section-title">WHAT'S THE CALL?</div>
-    <p class="section-sub">Three options. One Sunday. Make the call.</p>
-    <div class="results-grid" id="results-grid"></div>
-  </div>
+<nav class="nav"><span class="nav-logo">SORTED</span><span class="nav-step">03 / 03 — PICK ONE</span></nav>
+<div class="content"><div class="section-label">The Options</div><div class="section-title">WHAT'S THE CALL?</div><p class="section-sub">Three options. One Sunday. Make the call.</p><div class="results-grid" id="results-grid"></div></div>
 </div>
-
-<!-- RECAP LOADING -->
-<div class="screen loading-screen" id="screen-recap-loading">
-  <div class="spinner"></div>
-  <div class="loading-msg">Writing recaps for the crew...</div>
-</div>
-
-<!-- RECAP -->
+<div class="screen loading-screen" id="screen-recap-loading"><div class="spinner"></div><div class="loading-msg">Writing recaps for the crew...</div></div>
 <div class="screen" id="screen-recap">
-  <nav class="nav"><span class="nav-logo">SORTED</span><span class="nav-step">LOCKED IN</span></nav>
-  <div class="content">
-    <div class="section-label">Crew Recap</div>
-    <div class="section-title">SEND IT.</div>
-    <p class="section-sub">Copy each person's recap and drop it in the chat. Everyone knows the plan.</p>
-    <div class="recap-chosen" id="recap-chosen"></div>
-    <div class="recap-cards" id="recap-cards"></div>
-    <div class="start-over" onclick="startOver()">Start over for a different Sunday</div>
-  </div>
+<nav class="nav"><span class="nav-logo">SORTED</span><span class="nav-step">LOCKED IN</span></nav>
+<div class="content"><div class="section-label">Crew Recap</div><div class="section-title">SEND IT.</div><p class="section-sub">Copy each person's recap and drop it in the chat. Everyone knows the plan.</p><div class="recap-chosen" id="recap-chosen"></div><div class="recap-cards" id="recap-cards"></div><div class="start-over" onclick="startOver()">Start over for a different Sunday</div></div>
 </div>
-
 <script>
-const adventureLabels=['Couch Mode','Light Stroll','Good Vibes','Full Send','Absolute Chaos'];
-const riskLabels=['Pillow Fort Safe','Minor Scrapes Possible','Sign the Waiver','Call Your Mom First','Danger Zone'];
-const costLabels=['Free.99','Pocket Change','Normal People Budget','Treat Yourself',"Don't Tell Her"];
-const loadingMsgs=['Consulting the Sunday oracle...','Rejecting lame suggestions...','Scanning the vibe coordinates...','Running it past the boys...','Eliminating anything with a required waiver...'];
-let msgInterval,activities=[],attendees=[],selectedActivity=null;
-
-function getKey(){return sessionStorage.getItem('sorted_key')||''}
+const API_BASE='https://sorted-api-production.up.railway.app';
+const AL=['Couch Mode','Light Stroll','Good Vibes','Full Send','Absolute Chaos'];
+const RL=['Pillow Fort Safe','Minor Scrapes Possible','Sign the Waiver','Call Your Mom First','Danger Zone'];
+const CL=['Free.99','Pocket Change','Normal People Budget','Treat Yourself',"Don't Tell Her"];
+const LM=['Consulting the Sunday oracle...','Rejecting lame suggestions...','Scanning the vibe coordinates...','Running it past the boys...','Eliminating anything with a required waiver...'];
+let mi,activities=[],attendees=[],sel=null;
 function goTo(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active')}
-
-function saveKey(){
-  const k=document.getElementById('api-key-input').value.trim();
-  const err=document.getElementById('key-error');
-  if(!k.startsWith('sk-ant-')){err.style.display='block';return}
-  err.style.display='none';
-  sessionStorage.setItem('sorted_key',k);
-  goTo('screen-landing');
-}
-
-function addAttendee(name='',contact=''){
-  const list=document.getElementById('crew-list');
-  const idx=list.children.length;
-  const row=document.createElement('div');
-  row.className='crew-row';
-  row.innerHTML=`<input type="text" placeholder="${idx===0?'Your name':'Buddy\'s name'}" value="${name}" oninput="syncAttendees()"><input type="text" placeholder="Phone or email (optional)" value="${contact}" oninput="syncAttendees()" style="max-width:180px"><button class="remove-btn" onclick="removeRow(this)" title="Remove">&times;</button>`;
-  list.appendChild(row);
-}
-
-function removeRow(btn){if(document.getElementById('crew-list').children.length<=1)return;btn.closest('.crew-row').remove();syncAttendees()}
-function syncAttendees(){attendees=[];document.querySelectorAll('#crew-list .crew-row').forEach(row=>{const inputs=row.querySelectorAll('input');attendees.push({name:inputs[0].value.trim(),contact:inputs[1].value.trim()})})}
-function validateCrew(){syncAttendees();const valid=attendees.filter(a=>a.name);const err=document.getElementById('crew-error');if(!valid.length){err.style.display='block';return}err.style.display='none';goTo('screen-vibe')}
-
-function updateSliders(){
-  const a=+document.getElementById('slider-adventure').value;
-  const r=+document.getElementById('slider-risk').value;
-  const c=+document.getElementById('slider-cost').value;
-  document.getElementById('adventure-label').textContent=adventureLabels[a-1];
-  document.getElementById('risk-label').textContent=riskLabels[r-1];
-  document.getElementById('cost-label').textContent=costLabels[c-1];
-  document.getElementById('vibe-preview').innerHTML=`You want <strong>${adventureLabels[a-1]}</strong> with <strong>${riskLabels[r-1]}</strong> at a <strong>${costLabels[c-1]}</strong> budget. That works.`;
-}
-
-function cycleLoadingMsg(el){let i=0;if(msgInterval)clearInterval(msgInterval);el.textContent=loadingMsgs[0];msgInterval=setInterval(()=>{i=(i+1)%loadingMsgs.length;el.style.opacity='0';setTimeout(()=>{el.textContent=loadingMsgs[i];el.style.opacity='1'},400)},2200)}
-
-async function callAPI(prompt,maxTokens){
-  const res=await fetch('https://api.anthropic.com/v1/messages',{
-    method:'POST',
-    headers:{
-      'Content-Type':'application/json',
-      'x-api-key':getKey(),
-      'anthropic-version':'2023-06-01',
-      'anthropic-dangerous-direct-browser-access':'true'
-    },
-    body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:maxTokens,messages:[{role:'user',content:prompt}]})
-  });
-  if(!res.ok){const e=await res.json();throw new Error(e.error?.message||res.statusText)}
-  const data=await res.json();
-  return data.content[0].text;
-}
-
-async function generateActivities(){
-  syncAttendees();
-  const a=+document.getElementById('slider-adventure').value;
-  const r=+document.getElementById('slider-risk').value;
-  const c=+document.getElementById('slider-cost').value;
-  const validCrew=attendees.filter(x=>x.name);
-  goTo('screen-loading');
-  cycleLoadingMsg(document.getElementById('loading-msg'));
-  const prompt=`You are the ultimate guys day out planner. Generate exactly 3 Sunday morning/afternoon activity ideas.\n\nSettings:\n- Adventure Level: ${a}/5 (${adventureLabels[a-1]})\n- Risk Level: ${r}/5 (${riskLabels[r-1]})\n- Budget: ${c}/5 (${costLabels[c-1]})\n- Group size: ${validCrew.length} guys\n\nReturn ONLY a valid JSON array with exactly 3 objects. Each object must have:\n- "name": string (fun activity name, 2-5 words)\n- "tagline": string (one punchy sentence, 10 words max)\n- "description": string (2-3 sentences)\n- "whatToBring": array of 3-5 short strings\n- "bestTimeToStart": string like "8:30 AM"\n- "duration": string like "3-4 hours"\n- "estimatedCost": string like "$20-40/person" or "Free"\n- "wildCard": boolean (true for exactly one - the unexpected option)\n\nMake them specific and real. Vary them meaningfully. These are adult men on a Sunday morning.`;
-  try{
-    const text=await callAPI(prompt,1000);
-    activities=JSON.parse(text.replace(/```json|```/g,'').trim());
-    clearInterval(msgInterval);
-    renderResults();
-    goTo('screen-results');
-  }catch(e){
-    clearInterval(msgInterval);
-    if(e.message&&e.message.includes('auth')){sessionStorage.removeItem('sorted_key');alert('API key rejected. Re-enter your key.');goTo('screen-apikey');}
-    else{alert('Something went wrong: '+e.message);goTo('screen-vibe');}
-  }
-}
-
-function renderResults(){
-  const grid=document.getElementById('results-grid');
-  grid.innerHTML='';
-  activities.forEach((act,i)=>{
-    const card=document.createElement('div');
-    card.className='activity-card';
-    card.innerHTML=`<div class="card-header"><span class="card-badge ${act.wildCard?'badge-wild':'badge-solid'}">${act.wildCard?'WILD CARD':'SOLID PICK'}</span><div class="card-name">${act.name}</div></div><div class="card-tagline">${act.tagline}</div><div class="card-desc">${act.description}</div><div class="card-meta"><div class="meta-item"><div class="meta-label">Meet At</div><div class="meta-val">${act.bestTimeToStart}</div></div><div class="meta-item"><div class="meta-label">Duration</div><div class="meta-val">${act.duration}</div></div><div class="meta-item" style="grid-column:1/-1"><div class="meta-label">Cost</div><div class="meta-val">${act.estimatedCost}</div></div></div><div class="card-bring"><div class="bring-label">What to Bring</div><div class="bring-list">${act.whatToBring.map(b=>`<span class="bring-chip">${b}</span>`).join('')}</div></div><button class="pick-btn" onclick="pickActivity(${i})">THIS IS THE ONE &rarr;</button>`;
-    grid.appendChild(card);
-  });
-}
-
-async function pickActivity(idx){
-  selectedActivity=activities[idx];
-  syncAttendees();
-  const validCrew=attendees.filter(x=>x.name);
-  goTo('screen-recap-loading');
-  const a=+document.getElementById('slider-adventure').value;
-  const r=+document.getElementById('slider-risk').value;
-  const prompt=`Generate personalized Sunday plan recap messages for a group of guys.\n\nActivity: ${selectedActivity.name}\nDescription: ${selectedActivity.description}\nMeet: ${selectedActivity.bestTimeToStart}\nDuration: ${selectedActivity.duration}\nCost: ${selectedActivity.estimatedCost}\nBring: ${selectedActivity.whatToBring.join(', ')}\nAdventure level: ${a}/5 (${adventureLabels[a-1]})\nRisk level: ${r}/5 (${riskLabels[r-1]})\nAttendees: ${validCrew.map(a=>a.name).join(', ')}\n\nReturn ONLY a valid JSON array with one object per attendee:\n- "name": their name\n- "message": a casual text message they would receive. Mention their name. Include what's happening, when to show up, what to bring, ends with hype. Under 160 words. Write like a friend texting, not a business email.`;
-  try{
-    const text=await callAPI(prompt,1200);
-    const recaps=JSON.parse(text.replace(/```json|```/g,'').trim());
-    renderRecap(recaps);
-    goTo('screen-recap');
-  }catch(e){alert('Error generating recaps: '+e.message);goTo('screen-results')}
-}
-
-function renderRecap(recaps){
-  document.getElementById('recap-chosen').innerHTML=`<div class="chosen-label">Locked In</div><div class="chosen-name">${selectedActivity.name}</div><div class="chosen-meta">${selectedActivity.bestTimeToStart} &nbsp;·&nbsp; ${selectedActivity.duration} &nbsp;·&nbsp; ${selectedActivity.estimatedCost}</div>`;
-  const cards=document.getElementById('recap-cards');
-  cards.innerHTML='';
-  recaps.forEach(r=>{
-    const card=document.createElement('div');
-    card.className='recap-card';
-    const safeMsg=r.message.replace(/\\/g,'\\\\').replace(/`/g,'\\`');
-    card.innerHTML=`<div class="recap-name">${r.name}</div><div class="recap-msg">${r.message}</div><button class="copy-btn" onclick="copyRecap(this,\`${safeMsg}\`)">COPY TO CLIPBOARD</button>`;
-    cards.appendChild(card);
-  });
-}
-
+function addAttendee(n='',c=''){const list=document.getElementById('crew-list');const idx=list.children.length;const row=document.createElement('div');row.className='crew-row';row.innerHTML=`<input type="text" placeholder="${idx===0?'Your name':'Buddy name'}" value="${n}" oninput="sync()"><input type="text" placeholder="Phone/email (optional)" value="${c}" oninput="sync()" style="max-width:180px"><button class="remove-btn" onclick="rm(this)">&times;</button>`;list.appendChild(row)}
+function rm(btn){if(document.getElementById('crew-list').children.length<=1)return;btn.closest('.crew-row').remove();sync()}
+function sync(){attendees=[];document.querySelectorAll('#crew-list .crew-row').forEach(r=>{const i=r.querySelectorAll('input');attendees.push({name:i[0].value.trim(),contact:i[1].value.trim()})})}
+function validateCrew(){sync();const v=attendees.filter(a=>a.name);const e=document.getElementById('crew-error');if(!v.length){e.style.display='block';return}e.style.display='none';goTo('screen-vibe')}
+function updateSliders(){const a=+document.getElementById('slider-adventure').value;const r=+document.getElementById('slider-risk').value;const c=+document.getElementById('slider-cost').value;document.getElementById('adventure-label').textContent=AL[a-1];document.getElementById('risk-label').textContent=RL[r-1];document.getElementById('cost-label').textContent=CL[c-1];document.getElementById('vibe-preview').innerHTML=`You want <strong>${AL[a-1]}</strong> with <strong>${RL[r-1]}</strong> at a <strong>${CL[c-1]}</strong> budget. That works.`}
+function cycleMsg(el){let i=0;if(mi)clearInterval(mi);el.textContent=LM[0];mi=setInterval(()=>{i=(i+1)%LM.length;el.style.opacity='0';setTimeout(()=>{el.textContent=LM[i];el.style.opacity='1'},400)},2200)}
+async function callAPI(prompt,max){const res=await fetch(`${API_BASE}/api/chat`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:max,messages:[{role:'user',content:prompt}]})});if(!res.ok){const e=await res.json();throw new Error(e.error||res.statusText)}const d=await res.json();return d.content[0].text}
+async function generateActivities(){sync();const a=+document.getElementById('slider-adventure').value;const r=+document.getElementById('slider-risk').value;const c=+document.getElementById('slider-cost').value;const crew=attendees.filter(x=>x.name);goTo('screen-loading');cycleMsg(document.getElementById('loading-msg'));const p=`You are the ultimate guys day out planner. Generate exactly 3 Sunday morning/afternoon activity ideas.\n\nSettings:\n- Adventure Level: ${a}/5 (${AL[a-1]})\n- Risk Level: ${r}/5 (${RL[r-1]})\n- Budget: ${c}/5 (${CL[c-1]})\n- Group size: ${crew.length} guys\n\nReturn ONLY a valid JSON array with exactly 3 objects. Each object: name (2-5 words), tagline (10 words max), description (2-3 sentences), whatToBring (array 3-5 items), bestTimeToStart, duration, estimatedCost, wildCard (boolean, true for exactly one).\n\nMake them specific and real. These are adult men on a Sunday morning.`;try{const t=await callAPI(p,1000);activities=JSON.parse(t.replace(/```json|```/g,'').trim());clearInterval(mi);renderResults();goTo('screen-results')}catch(e){clearInterval(mi);alert('Error: '+e.message);goTo('screen-vibe')}}
+function renderResults(){const g=document.getElementById('results-grid');g.innerHTML='';activities.forEach((act,i)=>{const card=document.createElement('div');card.className='activity-card';card.innerHTML=`<div class="card-header"><span class="card-badge ${act.wildCard?'badge-wild':'badge-solid'}">${act.wildCard?'WILD CARD':'SOLID PICK'}</span><div class="card-name">${act.name}</div></div><div class="card-tagline">${act.tagline}</div><div class="card-desc">${act.description}</div><div class="card-meta"><div class="meta-item"><div class="meta-label">Meet At</div><div class="meta-val">${act.bestTimeToStart}</div></div><div class="meta-item"><div class="meta-label">Duration</div><div class="meta-val">${act.duration}</div></div><div class="meta-item" style="grid-column:1/-1"><div class="meta-label">Cost</div><div class="meta-val">${act.estimatedCost}</div></div></div><div class="card-bring"><div class="bring-label">What to Bring</div><div class="bring-list">${act.whatToBring.map(b=>`<span class="bring-chip">${b}</span>`).join('')}</div></div><button class="pick-btn" onclick="pick(${i})">THIS IS THE ONE →</button>`;g.appendChild(card)})}
+async function pick(idx){sel=activities[idx];sync();const crew=attendees.filter(x=>x.name);goTo('screen-recap-loading');const a=+document.getElementById('slider-adventure').value;const r=+document.getElementById('slider-risk').value;const p=`Generate personalized Sunday recap texts for a group of guys.\n\nActivity: ${sel.name}\nDescription: ${sel.description}\nMeet: ${sel.bestTimeToStart}\nDuration: ${sel.duration}\nCost: ${sel.estimatedCost}\nBring: ${sel.whatToBring.join(', ')}\nAdventure: ${a}/5 (${AL[a-1]})\nRisk: ${r}/5 (${RL[r-1]})\nAttendees: ${crew.map(a=>a.name).join(', ')}\n\nReturn ONLY a valid JSON array, one object per attendee: {name, message}. Message: casual text, mentions their name, what/when/bring, ends with hype. Under 160 words. Friend texting, not business email.`;try{const t=await callAPI(p,1200);const recaps=JSON.parse(t.replace(/```json|```/g,'').trim());renderRecap(recaps);goTo('screen-recap')}catch(e){alert('Error: '+e.message);goTo('screen-results')}}
+function renderRecap(recaps){document.getElementById('recap-chosen').innerHTML=`<div class="chosen-label">Locked In</div><div class="chosen-name">${sel.name}</div><div class="chosen-meta">${sel.bestTimeToStart} &nbsp;·&nbsp; ${sel.duration} &nbsp;·&nbsp; ${sel.estimatedCost}</div>`;const cards=document.getElementById('recap-cards');cards.innerHTML='';recaps.forEach(r=>{const card=document.createElement('div');card.className='recap-card';const safe=r.message.replace(/\\/g,'\\\\').replace(/`/g,'\\`');card.innerHTML=`<div class="recap-name">${r.name}</div><div class="recap-msg">${r.message}</div><button class="copy-btn" onclick="copyRecap(this,\`${safe}\`)">COPY TO CLIPBOARD</button>`;cards.appendChild(card)})}
 function copyRecap(btn,text){navigator.clipboard.writeText(text).then(()=>{btn.textContent='COPIED!';btn.classList.add('copied');setTimeout(()=>{btn.textContent='COPY TO CLIPBOARD';btn.classList.remove('copied')},2000)})}
-
-function startOver(){document.getElementById('crew-list').innerHTML='';addAttendee();document.getElementById('slider-adventure').value=3;document.getElementById('slider-risk').value=2;document.getElementById('slider-cost').value=2;updateSliders();activities=[];selectedActivity=null;attendees=[];goTo('screen-landing')}
-
-// Init: skip key screen if already set
-if(getKey()){goTo('screen-landing')}
-addAttendee();
-updateSliders();
+function startOver(){document.getElementById('crew-list').innerHTML='';addAttendee();document.getElementById('slider-adventure').value=3;document.getElementById('slider-risk').value=2;document.getElementById('slider-cost').value=2;updateSliders();activities=[];sel=null;attendees=[];goTo('screen-landing')}
+addAttendee();updateSliders();
 </script>
 </body>
 </html>
