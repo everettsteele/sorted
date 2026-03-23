@@ -17,45 +17,34 @@
 }
 html,body{height:100%;background:var(--white)}
 body{font-family:'Outfit',sans-serif;color:var(--black);display:flex;flex-direction:column;}
-
 .screen{display:none;flex-direction:column;min-height:100vh;overflow-y:auto}
 .screen.active{display:flex}
 @keyframes popIn{from{opacity:0;transform:scale(0.97)}to{opacity:1;transform:none}}
 .screen.active{animation:popIn 0.2s ease}
-
-/* NAV */
 .nav{padding:16px 24px;display:flex;align-items:center;justify-content:space-between;border-bottom:var(--border);flex-shrink:0;background:var(--white)}
 .nav-logo{font-family:'Bebas Neue',cursive;font-size:28px;letter-spacing:0.05em;color:var(--black)}
 .nav-logo span{color:var(--orange)}
 .nav-pill{font-family:'Space Mono',monospace;font-size:10px;padding:5px 12px;border:2px solid var(--black);border-radius:20px;letter-spacing:0.05em;background:var(--yellow)}
-
-/* HERO */
 .hero{flex:1;display:flex;flex-direction:column;padding:32px 24px 48px;position:relative;}
 .hero-bg{position:absolute;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 39px,var(--black) 39px,var(--black) 40px),repeating-linear-gradient(90deg,transparent,transparent 39px,var(--black) 39px,var(--black) 40px);opacity:0.04;pointer-events:none}
 .hero-inner{position:relative;z-index:1;display:flex;flex-direction:column;flex:1}
 .hero-tag{display:inline-flex;align-items:center;gap:8px;font-family:'Space Mono',monospace;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:20px}
 .hero-tag-dot{width:8px;height:8px;border-radius:50%;background:var(--orange)}
-h1{font-family:'Bebas Neue',cursive;font-size:clamp(48px,8vw,88px);line-height:0.88;letter-spacing:0.02em;color:var(--black);margin-bottom:8px}
+h1{font-family:'Bebas Neue',cursive;font-size:clamp(52px,12vw,96px);line-height:0.88;letter-spacing:0.02em;color:var(--black);margin-bottom:8px}
 h1 .highlight{color:var(--orange);display:block}
 .hero-sub{font-family:'Outfit',sans-serif;font-size:16px;color:#555;line-height:1.6;font-weight:400;max-width:520px;margin:16px 0 24px;}
 .feature-chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:24px}
 .chip{font-family:'Space Mono',monospace;font-size:10px;padding:7px 14px;border:2px solid var(--black);border-radius:4px;letter-spacing:0.05em;background:var(--white);font-weight:700}
 .chip.orange{background:var(--orange);color:var(--white);border-color:var(--orange)}
-
-/* BUTTONS */
 .cta-bar{padding:20px 24px;flex-shrink:0;display:flex;flex-direction:column;gap:10px;border-top:var(--border);background:var(--white)}
 .btn{width:100%;padding:18px 24px;border:var(--border);border-radius:var(--radius);font-family:'Bebas Neue',cursive;font-size:22px;letter-spacing:0.08em;cursor:pointer;transition:transform 0.1s,box-shadow 0.1s;box-shadow:4px 4px 0 var(--black);position:relative}
 .btn:active{transform:translate(2px,2px);box-shadow:2px 2px 0 var(--black)}
 .btn-primary{background:var(--orange);color:var(--white)}
 .btn-secondary{background:var(--white);color:var(--black)}
-
-/* CONTENT */
 .content{flex:1;padding:24px;overflow-y:auto}
 .step-eyebrow{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--orange);margin-bottom:12px;font-weight:700}
 .step-title{font-family:'Bebas Neue',cursive;font-size:52px;line-height:0.95;margin-bottom:6px;color:var(--black)}
 .step-sub{font-size:14px;color:#555;font-weight:400;margin-bottom:28px;line-height:1.5}
-
-/* CREW */
 .crew-list{display:flex;flex-direction:column;gap:10px}
 .crew-row{display:flex;gap:8px;align-items:center}
 .crew-row input{flex:1;background:var(--white);border:var(--border);border-radius:var(--radius);padding:13px 16px;color:var(--black);font-family:'Outfit',sans-serif;font-size:15px;font-weight:500;outline:none;transition:border-color 0.15s,box-shadow 0.15s}
@@ -65,15 +54,18 @@ h1 .highlight{color:var(--orange);display:block}
 .rm-btn:active{background:var(--yellow)}
 .add-btn{margin-top:10px;width:100%;padding:13px;background:var(--white);border:2px dashed var(--black);border-radius:var(--radius);font-family:'Space Mono',monospace;font-size:11px;letter-spacing:0.08em;cursor:pointer;font-weight:700;color:var(--black)}
 .add-btn:hover{background:var(--yellow);border-style:solid}
-
-/* LOCATION */
-.loc-block{margin-bottom:28px}
+.loc-block{margin-bottom:24px}
 .field-label{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;font-weight:700;margin-bottom:10px;color:var(--black)}
 .field-input{width:100%;background:var(--white);border:var(--border);border-radius:var(--radius);padding:13px 16px;color:var(--black);font-family:'Outfit',sans-serif;font-size:15px;font-weight:500;outline:none;transition:box-shadow 0.15s}
 .field-input:focus{box-shadow:3px 3px 0 var(--orange);border-color:var(--orange)}
 .field-input::placeholder{color:#aaa;font-weight:400}
-
-/* SLIDERS */
+input[type=date].field-input{-webkit-appearance:none;appearance:none;font-family:'Outfit',sans-serif;}
+.date-toggle{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:0.06em;text-decoration:underline;cursor:pointer;color:var(--orange);margin-top:10px;display:inline-block;font-weight:700}
+.date-options{margin-top:16px;display:none}
+.date-options.open{display:block}
+.date-vote-note{padding:12px 14px;background:var(--yellow);border:var(--border);border-radius:var(--radius);font-family:'Space Mono',monospace;font-size:10px;letter-spacing:0.04em;margin-bottom:14px;line-height:1.5}
+.date-option-row{margin-bottom:10px}
+.date-option-label{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:0.1em;text-transform:uppercase;color:#888;margin-bottom:6px;display:block}
 .slider-block{margin-bottom:32px;padding:20px;border:var(--border);border-radius:var(--radius);background:var(--white);box-shadow:4px 4px 0 var(--black)}
 .slider-head{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:14px}
 .slider-name{font-family:'Bebas Neue',cursive;font-size:22px;letter-spacing:0.04em}
@@ -85,16 +77,12 @@ input[type=range]::-moz-range-thumb{width:24px;height:24px;border-radius:50%;bac
 .slider-ends span{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:0.05em;color:#666}
 .vibe-box{margin-top:8px;padding:14px 16px;background:var(--yellow);border:var(--border);border-radius:var(--radius);font-size:13px;line-height:1.5;font-weight:500}
 .vibe-box strong{font-weight:700}
-
-/* LOADING */
 .loading-screen{align-items:center;justify-content:center;text-align:center;gap:16px;background:var(--black)}
 .loading-inner{display:flex;flex-direction:column;align-items:center;gap:20px}
 .loader-ring{width:60px;height:60px;border:4px solid rgba(255,255,255,0.1);border-top-color:var(--orange);border-radius:50%;animation:spin 0.7s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
 .loading-word{font-family:'Bebas Neue',cursive;font-size:clamp(36px,8vw,56px);color:var(--white);letter-spacing:0.06em;transition:opacity 0.3s}
 .loading-sub{font-family:'Space Mono',monospace;font-size:11px;color:rgba(255,255,255,0.4);letter-spacing:0.08em}
-
-/* RESULTS */
 .results-list{display:flex;flex-direction:column;gap:16px}
 .activity-card{border:var(--border);border-radius:var(--radius);background:var(--white);box-shadow:5px 5px 0 var(--black);overflow:hidden}
 .card-top{padding:20px 20px 0}
@@ -116,12 +104,13 @@ input[type=range]::-moz-range-thumb{width:24px;height:24px;border-radius:50%;bac
 .bring-pill{font-size:12px;padding:4px 10px;border:2px solid var(--black);border-radius:3px;background:var(--white);font-weight:500}
 .pick-btn{display:block;width:100%;padding:16px;background:var(--black);color:var(--white);border:none;font-family:'Bebas Neue',cursive;font-size:20px;letter-spacing:0.08em;cursor:pointer;border-top:var(--border);transition:background 0.15s}
 .pick-btn:hover{background:var(--orange)}
-
-/* RECAP */
-.recap-header{border:var(--border);border-radius:var(--radius);padding:18px 20px;background:var(--orange);box-shadow:4px 4px 0 var(--black);margin-bottom:20px}
+.recap-header{border:var(--border);border-radius:var(--radius);padding:18px 20px;background:var(--orange);box-shadow:4px 4px 0 var(--black);margin-bottom:16px}
 .recap-eyebrow{font-family:'Space Mono',monospace;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.7);margin-bottom:6px}
 .recap-activity{font-family:'Bebas Neue',cursive;font-size:38px;line-height:0.95;color:var(--white);margin-bottom:4px}
-.recap-details{font-family:'Space Mono',monospace;font-size:11px;color:rgba(255,255,255,0.8);letter-spacing:0.04em}
+.recap-details{font-family:'Space Mono',monospace;font-size:11px;color:rgba(255,255,255,0.85);letter-spacing:0.04em;line-height:1.6}
+.copy-all-bar{margin-bottom:16px}
+.copy-all-btn{width:100%;padding:14px;background:var(--yellow);border:var(--border);border-radius:var(--radius);font-family:'Space Mono',monospace;font-size:11px;letter-spacing:0.08em;cursor:pointer;font-weight:700;text-transform:uppercase;box-shadow:3px 3px 0 var(--black);transition:background 0.15s}
+.copy-all-btn:hover{background:var(--orange);color:var(--white)}
 .crew-recaps{display:flex;flex-direction:column;gap:14px}
 .recap-card{border:var(--border);border-radius:var(--radius);background:var(--white);box-shadow:4px 4px 0 var(--black);overflow:hidden}
 .recap-person{padding:12px 16px;background:var(--yellow);border-bottom:var(--border);font-family:'Bebas Neue',cursive;font-size:20px;letter-spacing:0.04em}
@@ -132,6 +121,14 @@ input[type=range]::-moz-range-thumb{width:24px;height:24px;border-radius:50%;bac
 .restart{text-align:center;padding:24px 24px 32px;font-size:13px;color:#888;cursor:pointer;text-decoration:underline;font-weight:500}
 .restart:hover{color:var(--black)}
 .err{background:var(--yellow);border:var(--border);border-radius:var(--radius);padding:12px 16px;font-size:13px;font-weight:600;margin-top:12px;display:none}
+.err-toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--black);color:var(--white);padding:14px 20px;border-radius:var(--radius);font-family:'Space Mono',monospace;font-size:11px;letter-spacing:0.06em;display:none;z-index:999;max-width:320px;text-align:center;box-shadow:4px 4px 0 var(--orange)}
+@media(min-width:640px){
+  html,body{background:#e8e5e0;align-items:flex-start;justify-content:center}
+  body{padding:40px 24px;min-height:100vh}
+  .screen{max-width:480px;width:100%;min-height:auto;box-shadow:8px 8px 0 var(--black);border:var(--border);border-radius:var(--radius);overflow:hidden}
+  .screen.loading-screen{min-height:420px;border-radius:var(--radius)}
+  h1{font-size:clamp(52px,8vw,88px)}
+}
 </style>
 </head>
 <body>
@@ -144,13 +141,13 @@ input[type=range]::-moz-range-thumb{width:24px;height:24px;border-radius:50%;bac
 <div class="hero-inner">
 <div class="hero-tag"><span class="hero-tag-dot"></span>Guys Day Out Planner</div>
 <h1>STOP<br>ASKING<br><span class="highlight">THE<br>GROUP<br>CHAT.</span></h1>
-<p class="hero-sub">Tell us where you are, how wild you want to get, and what you're willing to spend. We'll pick three real venues — TopGolf, go-karts, axe throwing, escape rooms — and write a personalized text for each person in the crew.</p>
+<p class="hero-sub">Tell us who's coming, when, and how wild you want to get. We'll pick three real venues and build a full logistics plan for every person in the crew.</p>
 <div class="feature-chips">
 <span class="chip orange">Real Venues</span>
-<span class="chip">Adventure Level</span>
-<span class="chip">Risk Tolerance</span>
+<span class="chip">Pick a Date</span>
+<span class="chip">Crew Vote</span>
 <span class="chip">Budget</span>
-<span class="chip">Crew Recaps</span>
+<span class="chip">Full Plan Per Person</span>
 </div>
 </div>
 </div>
@@ -165,7 +162,7 @@ input[type=range]::-moz-range-thumb{width:24px;height:24px;border-radius:50%;bac
 <div class="content">
 <div class="step-eyebrow">Step 1</div>
 <div class="step-title">WHO'S COMING?</div>
-<p class="step-sub">Add the crew. We'll write each person a personal text when you pick the activity.</p>
+<p class="step-sub">Add the crew. Everyone gets their own full plan when you pick the spot.</p>
 <div class="crew-list" id="crew-list"></div>
 <button class="add-btn" onclick="addPerson()">+ ADD ANOTHER</button>
 <div class="err" id="crew-err">Add at least one name to continue.</div>
@@ -176,17 +173,31 @@ input[type=range]::-moz-range-thumb{width:24px;height:24px;border-radius:50%;bac
 </div>
 </div>
 
-<!-- LOCATION -->
+<!-- LOCATION + DATE -->
 <div class="screen" id="s-loc">
 <nav class="nav"><span class="nav-logo">SORT<span>ED</span></span><span class="nav-pill">2 / 4</span></nav>
 <div class="content">
 <div class="step-eyebrow">Step 2</div>
-<div class="step-title">WHERE ARE YOU?</div>
-<p class="step-sub">Your city and how far you're willing to drive. We'll find real local venues.</p>
+<div class="step-title">WHEN + WHERE?</div>
+<p class="step-sub">Pick a date and your city. We'll find real venues in range.</p>
+
+<div class="loc-block">
+<div class="field-label">Date</div>
+<input type="date" class="field-input" id="date-input">
+<span class="date-toggle" id="date-toggle" onclick="toggleDateOptions()">NOT SURE? SUGGEST 3 DATES FOR A CREW VOTE</span>
+<div class="date-options" id="date-options">
+<div class="date-vote-note">Each person's plan will end with a voting ask. First to 3 wins.</div>
+<div class="date-option-row"><span class="date-option-label">Option 1</span><input type="date" class="field-input" id="date-opt-1"></div>
+<div class="date-option-row"><span class="date-option-label">Option 2</span><input type="date" class="field-input" id="date-opt-2"></div>
+<div class="date-option-row"><span class="date-option-label">Option 3</span><input type="date" class="field-input" id="date-opt-3"></div>
+</div>
+</div>
+
 <div class="loc-block">
 <div class="field-label">City / Area</div>
 <input type="text" class="field-input" id="city-input" placeholder="e.g. Atlanta, GA" autocomplete="off">
 </div>
+
 <div class="slider-block">
 <div class="slider-head">
 <span class="slider-name">Drive Distance</span>
@@ -221,11 +232,11 @@ input[type=range]::-moz-range-thumb{width:24px;height:24px;border-radius:50%;bac
 <div class="slider-ends"><span>Nobody's getting hurt</span><span>Sign the waiver</span></div>
 </div>
 <div class="slider-block">
-<div class="slider-head"><span class="slider-name">Budget</span><span class="slider-badge" id="cost-label">$25–50/person</span></div>
+<div class="slider-head"><span class="slider-name">Budget</span><span class="slider-badge" id="cost-label">$25-50/person</span></div>
 <input type="range" min="1" max="5" value="2" id="sl-cost" oninput="updateVibe()">
 <div class="slider-ends"><span>Basically free</span><span>Don't look at the receipt</span></div>
 </div>
-<div class="vibe-box" id="vibe-box">Looking for <strong>medium-energy</strong> activities with <strong>low risk</strong> in a <strong>$25–50/person</strong> range near <strong id="city-preview">your city</strong>.</div>
+<div class="vibe-box" id="vibe-box">Looking for <strong>medium-energy</strong> venues with <strong>low risk</strong> in a <strong>$25-50/person</strong> range near <strong id="city-preview">your city</strong>.</div>
 </div>
 <div class="cta-bar">
 <button class="btn btn-primary" onclick="generate()">FIND THE PLAN</button>
@@ -248,7 +259,7 @@ input[type=range]::-moz-range-thumb{width:24px;height:24px;border-radius:50%;bac
 <div class="content">
 <div class="step-eyebrow">Pick One</div>
 <div class="step-title">YOUR OPTIONS.</div>
-<p class="step-sub">Three venues. One Sunday. Make the call.</p>
+<p class="step-sub">Three venues. One day. Make the call.</p>
 <div class="results-list" id="results-list"></div>
 </div>
 </div>
@@ -258,22 +269,25 @@ input[type=range]::-moz-range-thumb{width:24px;height:24px;border-radius:50%;bac
 <div class="loading-inner">
 <div class="loader-ring"></div>
 <div class="loading-word">WRITING...</div>
-<div class="loading-sub">Drafting texts for the crew</div>
+<div class="loading-sub">Building the plan for each person</div>
 </div>
 </div>
 
-<!-- RECAP -->
+<!-- RECAP / PLAN -->
 <div class="screen" id="s-recap">
 <nav class="nav"><span class="nav-logo">SORT<span>ED</span></span><span class="nav-pill">Done</span></nav>
 <div class="content">
 <div class="step-eyebrow">Send It</div>
-<div class="step-title">COPY + GO.</div>
-<p class="step-sub">One text per person. Copy, paste, done.</p>
+<div class="step-title">THE PLAN.</div>
+<p class="step-sub">One message per person. Everything they need to show up.</p>
 <div class="recap-header" id="recap-header"></div>
+<div class="copy-all-bar"><button class="copy-all-btn" id="copy-all-btn" onclick="copyAll()">COPY ALL PLANS TO CLIPBOARD</button></div>
 <div class="crew-recaps" id="crew-recaps"></div>
-<div class="restart" onclick="restart()">Plan a different Sunday</div>
+<div class="restart" onclick="restart()">Plan a different day</div>
 </div>
 </div>
+
+<div class="err-toast" id="err-toast"></div>
 
 <script>
 const API='https://sorted-api-production.up.railway.app';
@@ -281,13 +295,24 @@ const AL=['Chill and Easy','Light Energy','Medium Energy','High Octane','Full Se
 const RL=['Nobody\'s Getting Hurt','Low Risk','Some Risk','Sign the Waiver','Danger Zone'];
 const CL=['Under $20/person','$25-50/person','$50-100/person','$100-200/person','Money is no object'];
 const DL=['Up to 10 min','Up to 20 min','Up to 30 min','Up to 45 min','Road trip territory (1hr+)'];
-const LM=['THINKING...','SCOUTING...','RESEARCHING...','CHECKING...','LOCKING IN...'];
-let timer,acts=[],people=[],chosen=null;
+const LM=['THINKING...','SCOUTING...','RESEARCHING...','LOCKING IN...','ALMOST THERE...'];
+let timer,acts=[],people=[],chosen=null,dateOptionsOpen=false,allRecaps=[];
 
-function goTo(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active')}
+function goTo(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');window.scrollTo(0,0)}
 function $(id){return document.getElementById(id)}
 
-function addPerson(n='',c=''){
+function nextSat(){
+  const d=new Date(),day=d.getDay(),diff=(6-day+7)%7||7;
+  d.setDate(d.getDate()+diff);
+  return d.toISOString().split('T')[0];
+}
+
+function showError(msg){
+  const t=$('err-toast');t.textContent=msg;t.style.display='block';
+  setTimeout(()=>t.style.display='none',5000);
+}
+
+function addPerson(n=''){
   const list=$('crew-list'),idx=list.children.length,row=document.createElement('div');
   row.className='crew-row';
   row.innerHTML=`<input type="text" placeholder="${idx===0?'Your name':'Name'}" value="${n}" oninput="syncPeople()"><button class="rm-btn" onclick="removePerson(this)">&times;</button>`;
@@ -297,11 +322,39 @@ function removePerson(btn){if($('crew-list').children.length<=1)return;btn.close
 function syncPeople(){people=[];$('crew-list').querySelectorAll('.crew-row input').forEach(i=>people.push(i.value.trim()))}
 function nextFromCrew(){syncPeople();const v=people.filter(Boolean);const e=$('crew-err');if(!v.length){e.style.display='block';return}e.style.display='none';goTo('s-loc')}
 
+function toggleDateOptions(){
+  dateOptionsOpen=!dateOptionsOpen;
+  $('date-options').className='date-options'+(dateOptionsOpen?' open':'');
+  $('date-input').style.display=dateOptionsOpen?'none':'block';
+  $('date-toggle').textContent=dateOptionsOpen?'NEVER MIND, I\'LL PICK ONE DATE':'NOT SURE? SUGGEST 3 DATES FOR A CREW VOTE';
+}
+
+function formatDate(d){
+  if(!d)return '';
+  const dt=new Date(d+'T12:00:00');
+  return dt.toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric'});
+}
+
+function getDateDisplay(){
+  if(dateOptionsOpen){
+    const opts=[$('date-opt-1').value,$('date-opt-2').value,$('date-opt-3').value].filter(Boolean);
+    return opts.length?opts.map(formatDate).join(' / '):null;
+  }
+  const v=$('date-input').value;
+  return v?formatDate(v):null;
+}
+
+function getVoteOptions(){
+  if(!dateOptionsOpen)return null;
+  return [$('date-opt-1').value,$('date-opt-2').value,$('date-opt-3').value].filter(Boolean).map(formatDate);
+}
+
 function updateLoc(){$('dist-label').textContent=DL[+$('sl-dist').value-1]}
 function nextFromLoc(){
-  const city=$('city-input').value.trim();const e=$('loc-err');
-  if(!city){e.style.display='block';return}e.style.display='none';
-  updateVibe();goTo('s-vibe');
+  const city=$('city-input').value.trim();
+  const e=$('loc-err');
+  if(!city){e.style.display='block';return}
+  e.style.display='none';updateVibe();goTo('s-vibe');
 }
 
 function updateVibe(){
@@ -317,7 +370,7 @@ function cycleMsgs(){
 
 async function callAPI(prompt,max){
   const res=await fetch(`${API}/api/chat`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:max,messages:[{role:'user',content:prompt}]})});
-  if(!res.ok){const e=await res.json();throw new Error(e.error||res.statusText)}
+  if(!res.ok){const e=await res.json().catch(()=>({}));throw new Error(e.error||res.statusText)}
   const d=await res.json();return d.content[0].text;
 }
 
@@ -327,42 +380,21 @@ async function generate(){
   const dist=DL[+$('sl-dist').value-1];
   const a=+$('sl-adv').value,r=+$('sl-risk').value,c=+$('sl-cost').value;
   const crew=people.filter(Boolean);
+  const dateDisplay=getDateDisplay()||'a day TBD';
   goTo('s-load');cycleMsgs();
-  const prompt=`You are a guys day out planner specializing in real local venue experiences.
-
-Location: ${city}
-Drive range: ${dist} from the city center
-Adventure level: ${a}/5 (${AL[a-1]})
-Risk level: ${r}/5 (${RL[r-1]})
-Budget: ${c}/5 (${CL[c-1]})
-Group size: ${crew.length} guys
-
-Generate exactly 3 venue-based activity options suitable for this area. These MUST be real types of venues people physically go to. Think: TopGolf, go-kart tracks, paintball fields, axe throwing bars, escape rooms, bowling alleys, batting cages, shooting ranges, trampoline parks, laser tag arenas, rock climbing gyms, whitewater rafting, mini golf bars, dueling piano bars, comedy clubs, sports bars with games, arcades, pool halls, sports games, food halls, brewery tours, etc. NO home activities, NO cooking challenges, NO "make your own X". Real venues where the fun is already built in.
-
-Return ONLY valid JSON array with exactly 3 objects:
-- "name": venue type name (e.g. "TopGolf Battle", "Go-Kart Grand Prix", "Axe Throwing + Beers")
-- "venueType": category of venue (e.g. "Golf entertainment venue", "Indoor go-kart track")
-- "tagline": one punchy sentence, max 10 words
-- "description": 2-3 sentences about why this specific activity is great for a guys day, what the experience is like
-- "whatToBring": array of 3-5 short strings (wear, bring, prep)
-- "meetTime": suggested meet time like "10:00 AM"
-- "duration": like "3-4 hours"
-- "estimatedCost": like "$45-65/person"
-- "wildCard": boolean (exactly one is true — the unexpected pick)
-
-Make sure the options vary meaningfully in type and energy level. These should feel local and specific to ${city}.`;
+  const prompt=`You are a guys day out planner specializing in real local venue experiences.\n\nLocation: ${city}\nDate: ${dateDisplay}\nDrive range: ${dist} from the city center\nAdventure level: ${a}/5 (${AL[a-1]})\nRisk level: ${r}/5 (${RL[r-1]})\nBudget: ${c}/5 (${CL[c-1]})\nGroup size: ${crew.length} guys\n\nGenerate exactly 3 venue-based activity options. These MUST be real types of venues people physically go to: TopGolf, go-kart tracks, paintball fields, axe throwing bars, escape rooms, bowling alleys, batting cages, shooting ranges, trampoline parks, laser tag, rock climbing gyms, whitewater rafting, mini golf bars, dueling piano bars, comedy clubs, sports bars with games, arcades, pool halls, live sports, food halls, brewery tours, etc. NO home activities.\n\nReturn ONLY valid JSON array with exactly 3 objects:\n- "name": punchy activity name (e.g. "TopGolf Battle", "Go-Kart Grand Prix")\n- "venueType": category (e.g. "Golf entertainment venue")\n- "tagline": one punchy sentence, max 10 words\n- "description": 2-3 sentences about why this rocks for a guys day\n- "whatToBring": array of 3-5 short strings\n- "meetTime": suggested meet time like "10:00 AM"\n- "duration": like "3-4 hours"\n- "estimatedCost": like "$45-65/person"\n- "parkingNotes": one short arrival/logistics note\n- "wildCard": boolean (exactly one true)`;
   try{
-    const t=await callAPI(prompt,1200);
+    const t=await callAPI(prompt,1400);
     acts=JSON.parse(t.replace(/```json|```/g,'').trim());
     clearInterval(timer);renderResults();goTo('s-results');
-  }catch(e){clearInterval(timer);console.error('[sorted] full error:',e);console.error('[sorted] error name:',e.name);console.error('[sorted] error message:',e.message);console.error('[sorted] error stack:',e.stack);alert('Error: '+e.message);goTo('s-vibe')}
+  }catch(e){clearInterval(timer);showError('Could not load venues: '+e.message);goTo('s-vibe')}
 }
 
 function renderResults(){
   const list=$('results-list');list.innerHTML='';
   acts.forEach((a,i)=>{
     const card=document.createElement('div');card.className='activity-card';
-    card.innerHTML=`<div class="card-top"><span class="card-flag ${a.wildCard?'flag-wild':'flag-solid'}">${a.wildCard?'Wild Card':'Solid Pick'}</span><div class="card-name">${a.name}</div><div class="card-tagline">${a.venueType} · ${a.tagline}</div><div class="card-desc">${a.description}</div></div><div class="card-stats"><div class="stat"><div class="stat-label">Meet At</div><div class="stat-val">${a.meetTime}</div></div><div class="stat"><div class="stat-label">Duration</div><div class="stat-val">${a.duration}</div></div><div class="stat stat-full" style="border-top:var(--border)"><div class="stat-label">Estimated Cost</div><div class="stat-val">${a.estimatedCost}</div></div></div><div class="card-bottom"><div class="bring-label">What to Know</div><div class="bring-pills">${a.whatToBring.map(b=>`<span class="bring-pill">${b}</span>`).join('')}</div></div><button class="pick-btn" onclick="pickActivity(${i})">THIS ONE →</button>`;
+    card.innerHTML=`<div class="card-top"><span class="card-flag ${a.wildCard?'flag-wild':'flag-solid'}">${a.wildCard?'Wild Card':'Solid Pick'}</span><div class="card-name">${a.name}</div><div class="card-tagline">${a.venueType} &middot; ${a.tagline}</div><div class="card-desc">${a.description}</div></div><div class="card-stats"><div class="stat"><div class="stat-label">Meet At</div><div class="stat-val">${a.meetTime}</div></div><div class="stat"><div class="stat-label">Duration</div><div class="stat-val">${a.duration}</div></div><div class="stat stat-full" style="border-top:var(--border)"><div class="stat-label">Estimated Cost</div><div class="stat-val">${a.estimatedCost}</div></div></div><div class="card-bottom"><div class="bring-label">What to Know</div><div class="bring-pills">${a.whatToBring.map(b=>`<span class="bring-pill">${b}</span>`).join('')}</div></div><button class="pick-btn" onclick="pickActivity(${i})">THIS ONE &rarr;</button>`;
     list.appendChild(card);
   });
 }
@@ -372,35 +404,21 @@ async function pickActivity(idx){
   syncPeople();
   const crew=people.filter(Boolean);
   const city=$('city-input').value.trim();
+  const dateDisplay=getDateDisplay()||'TBD';
+  const voteOpts=getVoteOptions();
+  const voteBlock=voteOpts&&voteOpts.length>1?`\n\nIMPORTANT: End each message with a date vote on its own line. Format exactly:\n"VOTE: Reply 1 for ${voteOpts[0]}${voteOpts[1]?', 2 for '+voteOpts[1]:''}${voteOpts[2]?', or 3 for '+voteOpts[2]:''}."`:'';
   goTo('s-recap-load');
   const a=+$('sl-adv').value,r=+$('sl-risk').value;
-  const prompt=`Write personalized text messages for a guys day out crew.
-
-Activity chosen: ${chosen.name}
-Venue type: ${chosen.venueType}
-Description: ${chosen.description}
-Meet: ${chosen.meetTime}
-Duration: ${chosen.duration}
-Cost: ${chosen.estimatedCost}
-What to know: ${chosen.whatToBring.join(', ')}
-City: ${city}
-Adventure level: ${a}/5 (${AL[a-1]})
-Risk level: ${r}/5 (${RL[r-1]})
-Crew: ${crew.join(', ')}
-
-Return ONLY valid JSON array, one object per person:
-{"name": "their name", "message": "the text"}
-
-Each message: mention their name, name the activity, say what time to meet, one key thing to bring or know, end with hype. Under 120 words. Sound like a friend texting — casual, excited, maybe one joke. NOT corporate. NOT formal.`;
+  const prompt=`Write detailed logistics plans for a guys day out crew. These are ready-to-send messages, not summaries.\n\nActivity: ${chosen.name}\nVenue type: ${chosen.venueType}\nDate: ${dateDisplay}\nMeet time: ${chosen.meetTime}\nDuration: ${chosen.duration}\nEstimated cost: ${chosen.estimatedCost}\nWhat to bring: ${chosen.whatToBring.join(', ')}\nArrival note: ${chosen.parkingNotes||'Check venue website'}\nCity: ${city}\nCrew: ${crew.join(', ')}${voteBlock}\n\nReturn ONLY valid JSON array, one object per person:\n{"name": "their name", "message": "the full plan message"}\n\nEach message must include on separate lines:\n1. Casual opener with their name (e.g. "Yo Marcus,")\n2. What the plan is (activity + venue type)\n3. Date and meet time\n4. How long and estimated cost per person\n5. Numbered what to bring list (3-5 items)\n6. One logistics note (parking, arrive early, reservation, etc.)\n7. "Reply YES to confirm."\n${voteOpts&&voteOpts.length>1?'8. The date vote line exactly as specified above.':''}\n\nFriendly and direct. Sound like the organizer. Under 200 words per person.`;
   try{
-    const t=await callAPI(prompt,1400);
-    const recaps=JSON.parse(t.replace(/```json|```/g,'').trim());
-    renderRecap(recaps);goTo('s-recap');
-  }catch(e){console.error('[sorted] full error:',e);console.error('[sorted] error name:',e.name);console.error('[sorted] error message:',e.message);console.error('[sorted] error stack:',e.stack);alert('Recap error: '+e.message);goTo('s-results')}
+    const t=await callAPI(prompt,2400);
+    allRecaps=JSON.parse(t.replace(/```json|```/g,'').trim());
+    renderRecap(allRecaps);goTo('s-recap');
+  }catch(e){showError('Plan generation failed: '+e.message);goTo('s-results')}
 }
 
 function renderRecap(recaps){
-  $('recap-header').innerHTML=`<div class="recap-eyebrow">Locked In</div><div class="recap-activity">${chosen.name}</div><div class="recap-details">${chosen.meetTime} &middot; ${chosen.duration} &middot; ${chosen.estimatedCost}</div>`;
+  $('recap-header').innerHTML=`<div class="recap-eyebrow">Locked In</div><div class="recap-activity">${chosen.name}</div><div class="recap-details">${getDateDisplay()||'Date TBD'}<br>${chosen.meetTime} &middot; ${chosen.duration} &middot; ${chosen.estimatedCost}</div>`;
   const container=$('crew-recaps');container.innerHTML='';
   recaps.forEach(r=>{
     const card=document.createElement('div');card.className='recap-card';
@@ -412,9 +430,24 @@ function renderRecap(recaps){
 
 function copyMsg(btn,text){navigator.clipboard.writeText(text).then(()=>{btn.textContent='Copied!';btn.classList.add('copied');setTimeout(()=>{btn.textContent='Copy to clipboard';btn.classList.remove('copied')},2000)})}
 
-function restart(){$('crew-list').innerHTML='';addPerson();$('city-input').value='';$('sl-dist').value=2;$('sl-adv').value=3;$('sl-risk').value=2;$('sl-cost').value=2;updateLoc();updateVibe();acts=[];chosen=null;people=[];goTo('s-land')}
+function copyAll(){
+  const all=allRecaps.map(r=>`--- ${r.name.toUpperCase()} ---\n${r.message}`).join('\n\n');
+  navigator.clipboard.writeText(all).then(()=>{
+    const btn=$('copy-all-btn');btn.textContent='ALL COPIED!';
+    setTimeout(()=>btn.textContent='COPY ALL PLANS TO CLIPBOARD',2000);
+  });
+}
 
-addPerson();updateLoc();updateVibe();
+function restart(){
+  $('crew-list').innerHTML='';addPerson();
+  $('city-input').value='';$('sl-dist').value=2;$('sl-adv').value=3;$('sl-risk').value=2;$('sl-cost').value=2;
+  updateLoc();updateVibe();acts=[];chosen=null;people=[];allRecaps=[];
+  $('date-input').value=nextSat();
+  if(dateOptionsOpen)toggleDateOptions();
+  goTo('s-land');
+}
+
+addPerson();updateLoc();updateVibe();$('date-input').value=nextSat();
 </script>
 </body>
 </html>
