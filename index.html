@@ -355,7 +355,7 @@ Make sure the options vary meaningfully in type and energy level. These should f
     const t=await callAPI(prompt,1200);
     acts=JSON.parse(t.replace(/```json|```/g,'').trim());
     clearInterval(timer);renderResults();goTo('s-results');
-  }catch(e){clearInterval(timer);alert('Error: '+e.message);goTo('s-vibe')}
+  }catch(e){clearInterval(timer);console.error('[sorted] full error:',e);console.error('[sorted] error name:',e.name);console.error('[sorted] error message:',e.message);console.error('[sorted] error stack:',e.stack);alert('Error: '+e.message);goTo('s-vibe')}
 }
 
 function renderResults(){
@@ -396,7 +396,7 @@ Each message: mention their name, name the activity, say what time to meet, one 
     const t=await callAPI(prompt,1400);
     const recaps=JSON.parse(t.replace(/```json|```/g,'').trim());
     renderRecap(recaps);goTo('s-recap');
-  }catch(e){alert('Recap error: '+e.message);goTo('s-results')}
+  }catch(e){console.error('[sorted] full error:',e);console.error('[sorted] error name:',e.name);console.error('[sorted] error message:',e.message);console.error('[sorted] error stack:',e.stack);alert('Recap error: '+e.message);goTo('s-results')}
 }
 
 function renderRecap(recaps){
