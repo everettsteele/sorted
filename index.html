@@ -301,7 +301,7 @@ function updateLoc(){$('dist-label').textContent=DL[+$('sl-dist').value-1]}
 function nextFromLoc(){
   const city=$('city-input').value.trim();const e=$('loc-err');
   if(!city){e.style.display='block';return}e.style.display='none';
-  $('city-preview').textContent=city;updateVibe();goTo('s-vibe');
+  updateVibe();goTo('s-vibe');
 }
 
 function updateVibe(){
