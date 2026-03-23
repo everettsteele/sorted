@@ -276,7 +276,7 @@ input[type=range]::-moz-range-thumb{width:24px;height:24px;border-radius:50%;bac
 </div>
 
 <script>
-const API='__API_BASE__';
+const API='https://sorted-api-production.up.railway.app';
 const AL=['Chill and Easy','Light Energy','Medium Energy','High Octane','Full Send'];
 const RL=['Nobody\'s Getting Hurt','Low Risk','Some Risk','Sign the Waiver','Danger Zone'];
 const CL=['Under $20/person','$25-50/person','$50-100/person','$100-200/person','Money is no object'];
@@ -316,7 +316,7 @@ function cycleMsgs(){
 }
 
 async function callAPI(prompt,max){
-  const res=await fetch(`${API}/api/chat`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:max,messages:[{role:'user',content:prompt}]})});
+  const res=await fetch(`${API}/api/chat`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:max,messages:[{role:'user',content:prompt}]})});
   if(!res.ok){const e=await res.json();throw new Error(e.error||res.statusText)}
   const d=await res.json();return d.content[0].text;
 }
