@@ -69,7 +69,7 @@ h1 .line-orange{background:linear-gradient(90deg,var(--pink),var(--cyan));-webki
 
 /* CTA BAR */
 .cta-bar{padding:16px 20px;border-top:1px solid rgba(0,240,255,0.12);background:rgba(8,14,43,0.98);display:flex;flex-direction:column;gap:10px;flex-shrink:0}
-.btn{width:100%;padding:17px 20px;border:none;border-radius:var(--radius);font-family:'Bebas Neue',cursive;font-size:22px;letter-spacing:0.12em;cursor:pointer;transition:all 0.1s;position:relative;overflow:hidden}
+.btn{width:100%;padding:17px 20px;border:none;border-radius:var(--radius);font-family:'Bebas Neue',cursive;font-size:22px;letter-spacing:0.12em;cursor:pointer;transition:all 0.1s;position:relative;overflow:hidden;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
 .btn-primary{background:linear-gradient(135deg,var(--pink),#c0005a);color:var(--white);box-shadow:0 4px 24px rgba(255,45,120,0.4),0 0 0 1px rgba(255,45,120,0.3)}
 .btn-primary:hover{box-shadow:0 4px 32px rgba(255,45,120,0.6),0 0 0 1px rgba(255,45,120,0.5);transform:translateY(-1px)}
 .btn-primary:active{transform:translateY(1px)}
@@ -233,6 +233,10 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;bac
   <div class="step-eyebrow">Step 1 — Assemble the idiots</div>
   <div class="step-title">WHO'S COMING?</div>
   <p class="step-sub">Add the crew. Everyone gets their own full logistics plan when you pick the spot.</p>
+<div style="margin-bottom:20px">
+  <label class="field-label" style="font-family:'Space Mono',monospace;font-size:9px;letter-spacing:0.12em;text-transform:uppercase;font-weight:700;margin-bottom:8px;display:block;color:rgba(255,255,255,0.5)">Crew Name <span style="color:rgba(255,255,255,0.25);font-weight:400">(optional)</span></label>
+  <input type="text" id="crew-name-input" placeholder="e.g. ABC Preschool Dads, The Work Guys..." autocomplete="off" style="width:100%;background:#0d1640;border:1px solid rgba(255,255,255,0.12);border-radius:6px;padding:13px 15px;color:#fff;font-family:'Outfit',sans-serif;font-size:15px;font-weight:500;outline:none">
+</div>
   <div class="crew-list" id="crew-list"></div>
   <button class="add-btn" onclick="addPerson()">+ ADD ANOTHER PERSON</button>
   <div class="err" id="crew-err">⚠ Add at least one name to continue.</div>
@@ -358,7 +362,7 @@ const RL=['Nobody\'s Getting Hurt','Low Risk','Some Risk','Sign the Waiver','Dan
 const CL=['Under $20/person','$25-50/person','$50-100/person','$100-200/person','Money is no object'];
 const DL=['Up to 10 min','Up to 20 min','Up to 30 min','Up to 45 min','Road trip territory (1hr+)'];
 const LM=['THINKING...','SCOUTING...','RESEARCHING...','LOCKING IN...','ALMOST THERE...'];
-let timer,acts=[],people=[],chosen=null,voteMode=false,allRecaps=[];
+let timer,acts=[],people=[],chosen=null,voteMode=false,allRecaps=[],crewName='';
 
 function goTo(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');window.scrollTo(0,0);}
 function $(id){return document.getElementById(id);}
@@ -375,7 +379,7 @@ function addPerson(n=''){
 }
 function removePerson(btn){if($('crew-list').children.length<=1)return;btn.closest('.crew-row').remove();syncPeople();}
 function syncPeople(){people=[];$('crew-list').querySelectorAll('.crew-row input').forEach(i=>people.push(i.value.trim()));}
-function nextFromCrew(){syncPeople();const v=people.filter(Boolean);const e=$('crew-err');if(!v.length){e.style.display='block';return;}e.style.display='none';goTo('s-loc');}
+function nextFromCrew(){syncPeople();const v=people.filter(Boolean);const e=$('crew-err');if(!v.length){e.style.display='block';return;}e.style.display='none';crewName=$('crew-name-input').value.trim();goTo('s-loc');}
 
 function toggleDateOptions(){
   voteMode=!voteMode;
@@ -427,7 +431,7 @@ async function generate(){
   const crew=people.filter(Boolean);
   const dateDisplay=getDateDisplay()||'a day TBD';
   goTo('s-load');cycleMsgs();
-  const prompt=`You are a guys day out planner. Find real local venue experiences.\n\nLocation: ${city}\nDate: ${dateDisplay}\nDrive range: ${dist}\nAdventure level: ${a}/5 (${AL[a-1]})\nRisk level: ${r}/5 (${RL[r-1]})\nBudget: ${c}/5 (${CL[c-1]})\nGroup size: ${crew.length} guys\n\nGenerate exactly 3 activity options at real venue types: TopGolf, go-kart tracks, paintball, axe throwing bars, escape rooms, bowling alleys, batting cages, shooting ranges, trampoline parks, laser tag, rock climbing, whitewater rafting, mini golf bars, dueling piano bars, comedy clubs, sports bars with games, arcades, pool halls, live sports, food halls, brewery tours. NO home activities.\n\nReturn ONLY valid JSON array, 3 objects:\n- name: punchy activity name\n- venueType: category\n- tagline: one punchy sentence max 10 words\n- description: 2-3 sentences why this rocks for guys day\n- whatToBring: array of 3-5 short strings\n- meetTime: like "10:00 AM"\n- duration: like "3-4 hours"\n- estimatedCost: like "$45-65/person"\n- parkingNotes: one short arrival/logistics note\n- wildCard: boolean (exactly one true)`;
+  const prompt=`You are a guys day out planner. Find real local venue experiences.\n\nLocation: ${city}\nDate: ${dateDisplay}\nDrive range: ${dist}\nAdventure level: ${a}/5 (${AL[a-1]})\nRisk level: ${r}/5 (${RL[r-1]})\nBudget: ${c}/5 (${CL[c-1]})\nGroup size: ${crew.length} guys${crewName?'\\nCrew name: '+crewName:''}\n\nGenerate exactly 3 activity options at real venue types: TopGolf, go-kart tracks, paintball, axe throwing bars, escape rooms, bowling alleys, batting cages, shooting ranges, trampoline parks, laser tag, rock climbing, whitewater rafting, mini golf bars, dueling piano bars, comedy clubs, sports bars with games, arcades, pool halls, live sports, food halls, brewery tours. NO home activities.\n\nReturn ONLY valid JSON array, 3 objects:\n- name: punchy activity name\n- venueType: category\n- tagline: one punchy sentence max 10 words\n- description: 2-3 sentences why this rocks for guys day\n- whatToBring: array of 3-5 short strings\n- meetTime: like "10:00 AM"\n- duration: like "3-4 hours"\n- estimatedCost: like "$45-65/person"\n- parkingNotes: one short arrival/logistics note\n- wildCard: boolean (exactly one true)`;
   try{
     const t=await callAPI([{role:'user',content:prompt}],1400);
     acts=JSON.parse(t.replace(/```json|```/g,'').trim());
@@ -453,7 +457,7 @@ async function pickActivity(idx){
   const voteOpts=getVoteOptions();
   const voteInstruction=voteOpts&&voteOpts.length>1?`\n\nEnd each message with a date vote:\n"VOTE: Reply 1 for ${voteOpts[0]}${voteOpts[1]?', 2 for '+voteOpts[1]:''}${voteOpts[2]?', 3 for '+voteOpts[2]:''}."`:'';
   goTo('s-recap-load');
-  const prompt=`Write a detailed logistics plan for each person in this guys day crew. These go directly into group chat messages.\n\nActivity: ${chosen.name} (${chosen.venueType})\nDate: ${dateDisplay}\nMeet time: ${chosen.meetTime}\nDuration: ${chosen.duration}\nCost per person: ${chosen.estimatedCost}\nWhat to bring: ${chosen.whatToBring.join(', ')}\nArrival note: ${chosen.parkingNotes||'Check venue website'}\nCity: ${city}\nCrew: ${crew.join(', ')}${voteInstruction}\n\nReturn ONLY valid JSON array, one object per person:\n{"name": "their name", "message": "the full message"}\n\nEach message must include:\n1. Casual opener with name\n2. Activity and venue type\n3. Date and meet time\n4. Duration and estimated cost\n5. Numbered bring list\n6. Logistics tip\n7. Reply YES to confirm${voteOpts&&voteOpts.length>1?'\n8. The date vote line.':''}\n\nFriendly, direct, from the organizer. Under 200 words each.`;
+  const prompt=`Write a detailed logistics plan for each person in this guys day crew${crewName?' called '+crewName:''}. These go directly into group chat messages.\n\nActivity: ${chosen.name} (${chosen.venueType})\nDate: ${dateDisplay}\nMeet time: ${chosen.meetTime}\nDuration: ${chosen.duration}\nCost per person: ${chosen.estimatedCost}\nWhat to bring: ${chosen.whatToBring.join(', ')}\nArrival note: ${chosen.parkingNotes||'Check venue website'}\nCity: ${city}\nCrew${crewName?' ('+crewName+')':''}: ${crew.join(', ')}${voteInstruction}\n\nReturn ONLY valid JSON array, one object per person:\n{"name": "their name", "message": "the full message"}\n\nEach message must include:\n1. Casual opener with name${crewName?', reference the crew name ('+crewName+') naturally':''}\n2. Activity and venue type\n3. Date and meet time\n4. Duration and estimated cost\n5. Numbered bring list\n6. Logistics tip\n7. Reply YES to confirm${voteOpts&&voteOpts.length>1?'\n8. The date vote line.':''}\n\nFriendly, direct, from the organizer. Under 200 words each.`;
   try{
     const t=await callAPI([{role:'user',content:prompt}],2400);
     allRecaps=JSON.parse(t.replace(/```json|```/g,'').trim());
