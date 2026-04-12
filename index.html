@@ -176,6 +176,9 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;bac
 /* SHARE SCREEN */
 .step-body{flex:1;padding:24px 20px;background:var(--navy);display:flex;flex-direction:column}
 .step-head{font-family:'Bebas Neue',cursive;font-size:48px;line-height:0.9;margin-bottom:8px;color:var(--white)}
+.org-hint{background:rgba(255,230,0,0.06);border:1px solid rgba(255,230,0,0.3);border-radius:var(--radius);padding:12px 14px;margin:0 0 14px;line-height:1.4}
+.org-hint-title{font-family:'Space Mono',monospace;font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:var(--yellow);font-weight:700;margin-bottom:4px;text-shadow:var(--glow-yellow)}
+.org-hint-sub{color:var(--dim);font-size:13px}
 .share-pitch{background:var(--navy2);border:var(--border-light);border-radius:var(--radius);padding:16px;margin:12px 0 16px;line-height:1.4}
 .share-pitch h4{font-family:'Bebas Neue',cursive;font-size:22px;letter-spacing:0.04em;color:var(--cyan);margin-bottom:6px}
 .share-actions{display:flex;gap:8px;flex-direction:column}
@@ -376,6 +379,11 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;bac
   <div class="nav"><div class="logo">SORT<em>ED</em></div></div>
   <div class="step-body">
     <h2 class="step-head">IT'S ON.</h2>
+    <div class="org-hint">
+      <div class="org-hint-title">⚠ Save this page — it's yours.</div>
+      <div class="org-hint-sub">Bookmark the URL or copy your organizer link. Close the tab without saving it and you lose the dashboard + lock button forever.</div>
+      <button class="btn btn-secondary" id="copy-org-link-btn" style="margin-top:8px">📋 COPY MY ORGANIZER LINK</button>
+    </div>
     <div class="share-pitch" id="share-pitch"></div>
 
     <div class="share-actions">
@@ -656,6 +664,15 @@ function renderShare(){
     }
   };
   $('lock-btn').onclick = lockItIn;
+  $('copy-org-link-btn').onclick = async () => {
+    const orgUrl = `${location.origin}${location.pathname}?p=${planId}&t=${orgToken}`;
+    try {
+      await navigator.clipboard.writeText(orgUrl);
+      toast('Organizer link copied. Save it somewhere safe.');
+    } catch (e) {
+      toast('Copy failed — grab it from the URL bar.');
+    }
+  };
   renderDashboard({
     crew: people.map(n => ({ name: n })),
     votes: [{ name: people[0], availability }]
