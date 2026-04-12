@@ -505,7 +505,7 @@ function addPerson(n=''){
   const row=document.createElement('div');row.className='crew-row';
   row.innerHTML=`
     <input type="text" class="crew-name" placeholder="Name" value="${n}" autocomplete="off" oninput="syncPeople()">
-    <input type="tel" class="crew-phone" placeholder="Phone" autocomplete="off" inputmode="tel" oninput="syncPeople()">
+    <input type="tel" class="crew-phone" placeholder="Phone (optional)" autocomplete="off" inputmode="tel" oninput="syncPeople()">
     <button class="rm-btn" onclick="removePerson(this)">&times;</button>
   `;
   list.appendChild(row);
@@ -532,9 +532,9 @@ function nextFromCrew(){
   for (let i=0;i<people.length;i++){
     if (people[i] || phones[i]) rows.push({name:people[i],phone:phones[i]});
   }
-  if (!rows.length){err.textContent='⚠ Add at least one name + phone to continue.';err.style.display='block';return;}
+  if (!rows.length){err.textContent='⚠ Add at least one name to continue.';err.style.display='block';return;}
   for (const r of rows){
-    if (!r.name||!r.phone){err.textContent='⚠ Every crew row needs both a name and a phone.';err.style.display='block';return;}
+    if (!r.name){err.textContent='⚠ Every row needs a name (phone is optional).';err.style.display='block';return;}
   }
   people=rows.map(r=>r.name);
   phones=rows.map(r=>r.phone);
@@ -639,9 +639,12 @@ function renderShare(){
   const desc = chosen.description || chosen.blurb || '';
   const descHtml = (desc && desc !== chosen.name) ? `<div>${escapeHtml(desc)}</div>` : '';
   $('share-pitch').innerHTML = `<h4>${escapeHtml(chosen.name)}</h4>${descHtml}`;
-  const city = $('city-input').value.trim();
+  const city = $('city-input') ? $('city-input').value.trim() : '';
   const msg = shareInviteMessage({ id: planId, crewName, activity: chosen, city });
-  $('send-btn').onclick = () => { window.location.href = smsHref(phones, msg); };
+  const validPhones = phones.filter(Boolean);
+  $('send-btn').style.display = validPhones.length ? '' : 'none';
+  $('send-btn').onclick = () => { window.location.href = smsHref(validPhones, msg); };
+  $('copy-msg-btn').textContent = validPhones.length ? '📋 COPY MESSAGE' : '📋 COPY LINK TO SHARE';
   $('copy-msg-btn').onclick = async () => {
     try {
       await navigator.clipboard.writeText(msg);
@@ -719,7 +722,10 @@ function renderFinal(plan){
   }
 
   const msg = shareFinalMessage(plan);
-  $('final-send-btn').onclick = () => { window.location.href = smsHref(phones, msg); };
+  const validPhones = phones.filter(Boolean);
+  $('final-send-btn').style.display = validPhones.length ? '' : 'none';
+  $('final-send-btn').onclick = () => { window.location.href = smsHref(validPhones, msg); };
+  $('final-copy-btn').textContent = validPhones.length ? '📋 COPY PLAN' : '📋 COPY PLAN + LINK';
   $('final-copy-btn').onclick = async () => {
     const body = msg + '\n\n' + (plan.finalPlan||[]).map(p=>`${p.name} — drive ${p.driveTime} · bring ${p.bring} · ${p.notes}`).join('\n');
     try {
