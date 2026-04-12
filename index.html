@@ -370,8 +370,8 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;bac
 <!-- SHARE LOADING -->
 <div class="screen loading-screen" id="s-share-load">
 <div class="loader-ring"></div>
-<div class="load-word">LOCKING IT IN...</div>
-<div class="load-sub">Creating the crew page</div>
+<div class="load-word">REFINING THE PLAN...</div>
+<div class="load-sub">Picking a venue, timing, and logistics</div>
 </div>
 
 <!-- SHARE -->
@@ -720,24 +720,17 @@ function renderFinal(plan){
   $('final-reason').textContent = plan.finalReason || '';
   const host = $('final-crew-plans');
   host.innerHTML = '';
-  if (plan.knownPlan) {
+  (plan.finalPlan || []).forEach(p => {
     const card = document.createElement('div');
     card.className = 'crew-plan-card';
-    card.innerHTML = `<h4 class="plan-person-name">The Plan</h4><div class="plan-line" style="color:var(--white)">${escapeHtml(plan.activity.name)}</div>`;
+    card.innerHTML = `
+      <h4 class="plan-person-name">${escapeHtml(p.name)}</h4>
+      <div class="plan-line"><span>Drive:</span> ${escapeHtml(p.driveTime||'')}</div>
+      <div class="plan-line"><span>Bring:</span> ${escapeHtml(p.bring||'')}</div>
+      <div class="plan-line"><span>Notes:</span> ${escapeHtml(p.notes||'')}</div>
+    `;
     host.appendChild(card);
-  } else {
-    (plan.finalPlan || []).forEach(p => {
-      const card = document.createElement('div');
-      card.className = 'crew-plan-card';
-      card.innerHTML = `
-        <h4 class="plan-person-name">${escapeHtml(p.name)}</h4>
-        <div class="plan-line"><span>Drive:</span> ${escapeHtml(p.driveTime||'')}</div>
-        <div class="plan-line"><span>Bring:</span> ${escapeHtml(p.bring||'')}</div>
-        <div class="plan-line"><span>Notes:</span> ${escapeHtml(p.notes||'')}</div>
-      `;
-      host.appendChild(card);
-    });
-  }
+  });
 
   const msg = shareFinalMessage(plan);
   const validPhones = phones.filter(Boolean);
@@ -863,13 +856,6 @@ function renderVoterFinal(plan){
   $('v-final-date').textContent = plan.finalDate || '';
   $('v-final-reason').textContent = plan.finalReason || '';
   const host = $('v-final-crew-plans'); host.innerHTML = '';
-  if (plan.knownPlan) {
-    const card = document.createElement('div');
-    card.className = 'crew-plan-card';
-    card.innerHTML = `<h4 class="plan-person-name">The Plan</h4><div class="plan-line" style="color:var(--white)">${escapeHtml(plan.activity.name)}</div>`;
-    host.appendChild(card);
-    return;
-  }
   (plan.finalPlan || []).forEach(p => {
     const card = document.createElement('div');
     card.className = 'crew-plan-card';
