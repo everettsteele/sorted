@@ -460,7 +460,7 @@ const RL=['Nobody\'s Getting Hurt','Low Risk','Some Risk','Sign the Waiver','Dan
 const CL=['Under $20/person','$25-50/person','$50-100/person','$100-200/person','Money is no object'];
 const DL=['Up to 10 min','Up to 20 min','Up to 30 min','Up to 45 min','Road trip territory (1hr+)'];
 const LM=['THINKING...','SCOUTING...','RESEARCHING...','LOCKING IN...','ALMOST THERE...'];
-let timer,acts=[],people=[],phones=[],chosen=null,crewName='',availability='',planId='',knownPlanMode=false,knownPlanText='';
+let timer,acts=[],people=[],phones=[],chosen=null,crewName='',availability='',planId='',orgToken='',knownPlanMode=false,knownPlanText='';
 
 function goTo(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');window.scrollTo(0,0);}
 function $(id){return document.getElementById(id);}
@@ -569,6 +569,8 @@ async function submitKnownPlan(){
     if(!res.ok) throw new Error(`create failed ${res.status}`);
     const data=await res.json();
     planId=data.id;
+    orgToken=data.organizerToken||'';
+    history.replaceState(null, '', `?p=${planId}&t=${orgToken}`);
     renderShare();
     goTo('s-share');
     startPolling();
@@ -683,10 +685,9 @@ async function lockItIn(){
   stopPolling();
   goTo('s-lock-load');
   try {
-    const res = await fetch(`${API}/api/plan/${planId}/lock`, { method: 'POST' });
+    const res = await fetch(`${API}/api/plan/${planId}/lock?t=${encodeURIComponent(orgToken)}`, { method: 'POST' });
     if (!res.ok) throw new Error(`lock failed ${res.status}`);
-    // Re-fetch canonical plan (guarantees we have the full shape)
-    const plan = await (await fetch(`${API}/api/plan/${planId}`)).json();
+    const plan = await (await fetch(`${API}/api/plan/${planId}?t=${encodeURIComponent(orgToken)}`)).json();
     renderFinal(plan);
     goTo('s-final');
   } catch (err) {
@@ -761,6 +762,8 @@ async function pickActivity(idx){
     if (!res.ok) throw new Error(`create failed ${res.status}`);
     const data = await res.json();
     planId = data.id;
+    orgToken = data.organizerToken || '';
+    history.replaceState(null, '', `?p=${planId}&t=${orgToken}`);
     renderShare();
     goTo('s-share');
     startPolling();
@@ -870,10 +873,45 @@ function showVoterError(msg){
   </div>`;
 }
 
+async function bootOrganizer(id, token){
+  planId = id;
+  orgToken = token;
+  try {
+    const res = await fetch(`${API}/api/plan/${id}?t=${encodeURIComponent(token)}`);
+    if (!res.ok) { showVoterError('This plan isn\'t available anymore.'); return; }
+    const plan = await res.json();
+    if (!plan.isOrganizer) {
+      // Token didn't match — fall back to voter view.
+      await bootVoter(id);
+      return;
+    }
+    chosen = plan.activity;
+    crewName = plan.crewName || '';
+    people = plan.crew.map(c => c.name);
+    phones = plan.crew.map(() => ''); // phones are stripped server-side; org won't have SMS here
+    availability = (plan.votes && plan.votes[0] && plan.votes[0].availability) || '';
+    if (plan.locked && plan.finalPlan) {
+      renderFinal(plan);
+      goTo('s-final');
+    } else {
+      renderShare();
+      renderDashboard(plan);
+      goTo('s-share');
+      startPolling();
+    }
+  } catch (e) {
+    console.error('[sorted] organizer boot failed:', e);
+    showVoterError('Could not load the plan. Try again later.');
+  }
+}
+
 (async function init(){
   const url = new URL(location.href);
   const p = url.searchParams.get('p');
-  if (p) {
+  const t = url.searchParams.get('t');
+  if (p && t) {
+    await bootOrganizer(p, t);
+  } else if (p) {
     await bootVoter(p);
   } else {
     addPerson(); updateLoc(); updateVibe();
