@@ -198,6 +198,12 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;bac
   .content::-webkit-scrollbar-thumb{background:rgba(0,240,255,0.2);border-radius:3px}
   .hero{border-radius:0}
 }
+.final-date{font-family:'Bebas Neue',cursive;font-size:44px;letter-spacing:0.04em;color:var(--cyan);text-shadow:var(--glow-cyan);margin:8px 0}
+.final-reason{color:var(--dim);font-size:14px;margin-bottom:16px;line-height:1.4}
+.crew-plan-card{background:var(--navy2);border:var(--border-light);border-radius:var(--radius);padding:14px;margin-bottom:10px}
+.plan-person-name{font-family:'Bebas Neue',cursive;font-size:20px;color:var(--cyan);letter-spacing:0.04em;margin-bottom:6px}
+.plan-line{font-size:14px;line-height:1.5}
+.plan-line span{color:var(--dim);display:inline-block;width:62px}
 </style>
 </head>
 <body>
@@ -358,6 +364,28 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;bac
     <div class="waiting-list" id="waiting-list"></div>
 
     <button class="btn btn-cyan" id="lock-btn">⚡ LOCK IT IN →</button>
+  </div>
+</div>
+
+<!-- LOCK LOADING -->
+<div class="screen loading-screen" id="s-lock-load">
+<div class="loader-ring"></div>
+<div class="load-word" id="lock-word">LOCKING...</div>
+<div class="load-sub">Picking the date &amp; building the plan</div>
+</div>
+
+<!-- FINAL -->
+<div class="screen" id="s-final">
+  <div class="nav"><div class="logo">GRIP IT 'N <em>RIP IT</em></div></div>
+  <div class="step-body">
+    <h2 class="step-head">LOCKED IN.</h2>
+    <div class="final-date" id="final-date"></div>
+    <div class="final-reason" id="final-reason"></div>
+    <div class="crew-plans" id="final-crew-plans"></div>
+    <div class="share-actions" style="margin-top:16px">
+      <button class="btn btn-primary" id="final-send-btn">📲 SEND PLAN TO GROUP TEXT</button>
+      <button class="btn btn-secondary" id="final-copy-btn">📋 COPY PLAN</button>
+    </div>
   </div>
 </div>
 
@@ -541,7 +569,53 @@ function startPolling(){
 
 function stopPolling(){ if (pollHandle) { clearInterval(pollHandle); pollHandle = null; } }
 
-async function lockItIn(){ /* filled in Task 12 */ }
+async function lockItIn(){
+  stopPolling();
+  goTo('s-lock-load');
+  try {
+    const res = await fetch(`${API}/api/plan/${planId}/lock`, { method: 'POST' });
+    if (!res.ok) throw new Error(`lock failed ${res.status}`);
+    // Re-fetch canonical plan (guarantees we have the full shape)
+    const plan = await (await fetch(`${API}/api/plan/${planId}`)).json();
+    renderFinal(plan);
+    goTo('s-final');
+  } catch (err) {
+    console.error('[sorted] lock failed:', err);
+    toast('Lock-in failed. Try again.');
+    goTo('s-share');
+    startPolling();
+  }
+}
+
+function renderFinal(plan){
+  $('final-date').textContent = plan.finalDate || '';
+  $('final-reason').textContent = plan.finalReason || '';
+  const host = $('final-crew-plans');
+  host.innerHTML = '';
+  (plan.finalPlan || []).forEach(p => {
+    const card = document.createElement('div');
+    card.className = 'crew-plan-card';
+    card.innerHTML = `
+      <h4 class="plan-person-name">${escapeHtml(p.name)}</h4>
+      <div class="plan-line"><span>Drive:</span> ${escapeHtml(p.driveTime||'')}</div>
+      <div class="plan-line"><span>Bring:</span> ${escapeHtml(p.bring||'')}</div>
+      <div class="plan-line"><span>Notes:</span> ${escapeHtml(p.notes||'')}</div>
+    `;
+    host.appendChild(card);
+  });
+
+  const msg = shareFinalMessage(plan);
+  $('final-send-btn').onclick = () => { window.location.href = smsHref(phones, msg); };
+  $('final-copy-btn').onclick = async () => {
+    const body = msg + '\n\n' + (plan.finalPlan||[]).map(p=>`${p.name} — drive ${p.driveTime} · bring ${p.bring} · ${p.notes}`).join('\n');
+    try {
+      await navigator.clipboard.writeText(body);
+      toast('Plan copied.');
+    } catch (e) {
+      toast('Copy failed.');
+    }
+  };
+}
 
 async function pickActivity(idx){
   chosen = acts[idx];
