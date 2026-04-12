@@ -173,6 +173,20 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;bac
 .err{background:rgba(255,45,120,0.08);border:1px solid rgba(255,45,120,0.25);border-radius:var(--radius);padding:11px 14px;font-family:'Space Mono',monospace;font-size:10px;font-weight:700;margin-top:10px;display:none;color:var(--pink);letter-spacing:0.04em}
 .toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:var(--navy3);color:var(--white);padding:13px 20px;border-radius:var(--radius);font-family:'Space Mono',monospace;font-size:9px;display:none;z-index:9999;max-width:300px;text-align:center;border:1px solid rgba(255,45,120,0.3);box-shadow:var(--glow-pink);letter-spacing:0.05em}
 
+/* SHARE SCREEN */
+.step-body{flex:1;padding:24px 20px;background:var(--navy);display:flex;flex-direction:column}
+.step-head{font-family:'Bebas Neue',cursive;font-size:48px;line-height:0.9;margin-bottom:8px;color:var(--white)}
+.share-pitch{background:var(--navy2);border:var(--border-light);border-radius:var(--radius);padding:16px;margin:12px 0 16px;line-height:1.4}
+.share-pitch h4{font-family:'Bebas Neue',cursive;font-size:22px;letter-spacing:0.04em;color:var(--cyan);margin-bottom:6px}
+.share-actions{display:flex;gap:8px;flex-direction:column}
+.waiting-list{display:flex;flex-direction:column;gap:8px;margin:8px 0 20px}
+.waiting-row{display:flex;justify-content:space-between;align-items:center;background:var(--navy2);border:1px solid rgba(255,255,255,0.08);border-radius:var(--radius);padding:10px 12px}
+.waiting-row .vote-name{font-weight:600}
+.waiting-row .vote-avail{color:var(--dim);font-size:13px;max-width:60%;text-align:right;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.waiting-row.voted{border-color:rgba(0,240,255,0.4)}
+.waiting-row.voted .vote-name::before{content:'✓ ';color:var(--cyan)}
+.waiting-row.pending .vote-name::before{content:'— ';color:var(--dim)}
+
 /* DESKTOP */
 @media(min-width:600px){
   body{background:#040810;display:flex;align-items:flex-start;justify-content:center;padding:40px 20px 60px}
@@ -333,11 +347,17 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;bac
   <div class="nav"><div class="logo">SORT<em>ED</em></div></div>
   <div class="step-body">
     <h2 class="step-head">IT'S ON.</h2>
-    <div id="share-pitch"></div>
-    <div id="waiting-list"></div>
-    <button id="send-btn" class="btn btn-primary">SEND TO GROUP TEXT</button>
-    <button id="copy-msg-btn" class="btn btn-secondary">COPY MESSAGE</button>
-    <button id="lock-btn" class="btn btn-cyan">LOCK IT IN →</button>
+    <div class="share-pitch" id="share-pitch"></div>
+
+    <div class="share-actions">
+      <button class="btn btn-primary" id="send-btn">📲 SEND TO GROUP TEXT</button>
+      <button class="btn btn-secondary" id="copy-msg-btn">📋 COPY MESSAGE</button>
+    </div>
+
+    <h3 class="step-sub" style="margin-top:24px">Crew's weighing in…</h3>
+    <div class="waiting-list" id="waiting-list"></div>
+
+    <button class="btn btn-cyan" id="lock-btn">⚡ LOCK IT IN →</button>
   </div>
 </div>
 
@@ -356,6 +376,37 @@ function goTo(id){document.querySelectorAll('.screen').forEach(s=>s.classList.re
 function $(id){return document.getElementById(id);}
 
 function toast(msg){const t=$('toast');t.textContent=msg;t.style.display='block';setTimeout(()=>t.style.display='none',4000);}
+
+function escapeHtml(s){return (s||'').replace(/[&<>"']/g, c=>({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c]));}
+
+function smsHref(phoneList, body){
+  const to = phoneList.join(',');
+  return `sms:${to}?&body=${encodeURIComponent(body)}`;
+}
+
+function shareInviteMessage(plan){
+  const url = `${location.origin}${location.pathname}?p=${plan.id}`;
+  return `${plan.crewName || 'Crew'}: ${plan.activity.name} in ${plan.city}. Weigh in on dates: ${url}`;
+}
+
+function shareFinalMessage(plan){
+  const url = `${location.origin}${location.pathname}?p=${plan.id}`;
+  return `${plan.crewName || 'Crew'}: LOCKED IN — ${plan.activity.name} in ${plan.city}, ${plan.finalDate}. Plan: ${url}`;
+}
+
+function renderDashboard(plan){
+  const host = $('waiting-list'); if (!host) return;
+  const votedNames = new Set((plan.votes||[]).map(v=>v.name));
+  const byName = Object.fromEntries((plan.votes||[]).map(v=>[v.name, v.availability]));
+  host.innerHTML = plan.crew.map(p => {
+    const voted = votedNames.has(p.name);
+    const avail = byName[p.name] || '';
+    return `<div class="waiting-row ${voted?'voted':'pending'}">
+      <span class="vote-name">${escapeHtml(p.name)}</span>
+      <span class="vote-avail">${voted ? escapeHtml(avail) : 'waiting…'}</span>
+    </div>`;
+  }).join('');
+}
 
 function addPerson(n=''){
   const list=$('crew-list');
@@ -450,9 +501,47 @@ function renderResults(){
 }
 
 let pollHandle = null;
-function renderShare(){ /* filled in Task 11 */ }
-function startPolling(){ /* filled in Task 11 */ }
+
+function renderShare(){
+  $('share-pitch').innerHTML = `<h4>${escapeHtml(chosen.name)}</h4><div>${escapeHtml(chosen.description||chosen.blurb||'')}</div>`;
+  const city = $('city-input').value.trim();
+  const msg = shareInviteMessage({ id: planId, crewName, activity: chosen, city });
+  $('send-btn').onclick = () => { window.location.href = smsHref(phones, msg); };
+  $('copy-msg-btn').onclick = async () => {
+    try {
+      await navigator.clipboard.writeText(msg);
+      toast('Copied. Paste into your group text.');
+    } catch (e) {
+      toast('Copy failed. Try the Send button.');
+    }
+  };
+  $('lock-btn').onclick = lockItIn;
+  renderDashboard({
+    crew: people.map(n => ({ name: n })),
+    votes: [{ name: people[0], availability }]
+  });
+}
+
+function startPolling(){
+  stopPolling();
+  pollHandle = setInterval(async () => {
+    if (!document.getElementById('s-share').classList.contains('active')) { stopPolling(); return; }
+    try {
+      const res = await fetch(`${API}/api/plan/${planId}`);
+      if (!res.ok) return;
+      const plan = await res.json();
+      renderDashboard(plan);
+      if (plan.locked && plan.finalPlan) {
+        stopPolling();
+        if (typeof renderFinal === 'function') { renderFinal(plan); goTo('s-final'); }
+      }
+    } catch(e) { /* swallow transient errors */ }
+  }, 10000);
+}
+
 function stopPolling(){ if (pollHandle) { clearInterval(pollHandle); pollHandle = null; } }
+
+async function lockItIn(){ /* filled in Task 12 */ }
 
 async function pickActivity(idx){
   chosen = acts[idx];
