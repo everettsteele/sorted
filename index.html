@@ -389,6 +389,45 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;bac
   </div>
 </div>
 
+<!-- VOTER: VOTE FORM -->
+<div class="screen" id="v-vote">
+  <div class="nav"><div class="logo">GRIP IT 'N <em>RIP IT</em></div></div>
+  <div class="step-body">
+    <h2 class="step-head" id="v-crew-name">CREW</h2>
+    <div class="share-pitch" id="v-pitch"></div>
+    <div class="field">
+      <label class="field-label">Who are you?</label>
+      <select class="field-input" id="v-name-select"></select>
+    </div>
+    <div class="field">
+      <label class="field-label">When works for you?</label>
+      <textarea class="field-input" id="v-avail" rows="3" placeholder='A date, a few dates, or a slot that works — e.g. "4/18", "any Sat after 1pm", "weekends in May but not the 25th"'></textarea>
+    </div>
+    <div class="err" id="v-err"></div>
+    <button class="btn btn-primary" id="v-submit">SUBMIT →</button>
+  </div>
+</div>
+
+<!-- VOTER: THANKS -->
+<div class="screen" id="v-thanks">
+  <div class="nav"><div class="logo">GRIP IT 'N <em>RIP IT</em></div></div>
+  <div class="step-body">
+    <h2 class="step-head">LOCKED IN.</h2>
+    <p id="v-thanks-copy">You'll get the plan in the group text once the organizer pulls the trigger.</p>
+  </div>
+</div>
+
+<!-- VOTER: FINAL PLAN VIEW -->
+<div class="screen" id="v-final">
+  <div class="nav"><div class="logo">GRIP IT 'N <em>RIP IT</em></div></div>
+  <div class="step-body">
+    <h2 class="step-head">PLAN IS LIVE.</h2>
+    <div class="final-date" id="v-final-date"></div>
+    <div class="final-reason" id="v-final-reason"></div>
+    <div class="crew-plans" id="v-final-crew-plans"></div>
+  </div>
+</div>
+
 <div class="toast" id="toast"></div>
 
 <script>
@@ -658,7 +697,100 @@ function restart(){
   goTo('s-land');
 }
 
-addPerson();updateLoc();updateVibe();
+async function bootVoter(id){
+  planId = id;
+  try {
+    const res = await fetch(`${API}/api/plan/${id}`);
+    if (!res.ok) { showVoterError('This plan isn\'t available anymore.'); return; }
+    const plan = await res.json();
+
+    if (plan.locked && plan.finalPlan) {
+      renderVoterFinal(plan);
+      goTo('v-final');
+      return;
+    }
+
+    $('v-crew-name').textContent = plan.crewName || 'CREW';
+    $('v-pitch').innerHTML = `<h4>${escapeHtml(plan.activity.name)}</h4><div>${escapeHtml(plan.activity.description || plan.activity.blurb || '')}</div><div style="margin-top:6px;color:var(--dim);font-size:13px">${escapeHtml(plan.city)}</div>`;
+
+    const votedNames = new Set((plan.votes||[]).map(v=>v.name));
+    const byName = Object.fromEntries((plan.votes||[]).map(v=>[v.name, v.availability]));
+    const sel = $('v-name-select');
+    sel.innerHTML = '<option value="">— pick your name —</option>' + plan.crew.map(p => {
+      const mark = votedNames.has(p.name) ? ' ✓' : '';
+      return `<option value="${escapeHtml(p.name)}">${escapeHtml(p.name)}${mark}</option>`;
+    }).join('');
+
+    sel.onchange = () => {
+      const chosenName = sel.value;
+      $('v-avail').value = byName[chosenName] || '';
+    };
+
+    $('v-submit').onclick = () => submitVote(plan);
+    goTo('v-vote');
+  } catch (e) {
+    console.error('[sorted] voter boot failed:', e);
+    showVoterError('Could not load the plan. Try again later.');
+  }
+}
+
+async function submitVote(plan){
+  const name = $('v-name-select').value;
+  const avail = $('v-avail').value.trim();
+  const err = $('v-err');
+  if (!name) { err.textContent='⚠ Pick your name.'; err.style.display='block'; return; }
+  if (!avail) { err.textContent='⚠ Tell us when works.'; err.style.display='block'; return; }
+  err.style.display='none';
+  try {
+    const res = await fetch(`${API}/api/plan/${planId}/vote`, {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ name, availability: avail })
+    });
+    if (!res.ok) {
+      const body = await res.json().catch(()=>({error:'vote failed'}));
+      err.textContent='⚠ '+(body.error||'vote failed'); err.style.display='block';
+      return;
+    }
+    goTo('v-thanks');
+  } catch(e) {
+    err.textContent='⚠ Network error. Try again.'; err.style.display='block';
+  }
+}
+
+function renderVoterFinal(plan){
+  $('v-final-date').textContent = plan.finalDate || '';
+  $('v-final-reason').textContent = plan.finalReason || '';
+  const host = $('v-final-crew-plans'); host.innerHTML = '';
+  (plan.finalPlan || []).forEach(p => {
+    const card = document.createElement('div');
+    card.className = 'crew-plan-card';
+    card.innerHTML = `
+      <h4 class="plan-person-name">${escapeHtml(p.name)}</h4>
+      <div class="plan-line"><span>Drive:</span> ${escapeHtml(p.driveTime||'')}</div>
+      <div class="plan-line"><span>Bring:</span> ${escapeHtml(p.bring||'')}</div>
+      <div class="plan-line"><span>Notes:</span> ${escapeHtml(p.notes||'')}</div>
+    `;
+    host.appendChild(card);
+  });
+}
+
+function showVoterError(msg){
+  document.body.innerHTML = `<div style="padding:40px;font-family:'Outfit',sans-serif;color:#fff;background:#080e2b;min-height:100vh">
+    <h2 style="font-family:'Bebas Neue';letter-spacing:0.04em;margin-bottom:8px">Oof.</h2>
+    <p style="color:rgba(255,255,255,0.6)">${escapeHtml(msg)}</p>
+  </div>`;
+}
+
+(async function init(){
+  const url = new URL(location.href);
+  const p = url.searchParams.get('p');
+  if (p) {
+    await bootVoter(p);
+  } else {
+    addPerson(); updateLoc(); updateVibe();
+  }
+})();
 </script>
 </body>
 </html>
