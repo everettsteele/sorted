@@ -321,26 +321,24 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;bac
 </div>
 </div>
 
-<!-- RECAP LOADING -->
-<div class="screen loading-screen" id="s-recap-load">
+<!-- SHARE LOADING -->
+<div class="screen loading-screen" id="s-share-load">
 <div class="loader-ring"></div>
-<div class="load-word">WRITING...</div>
-<div class="load-sub">Building briefing packets for the crew</div>
-<div class="load-disclaimer">Each person gets a full plan. Arrival time. Cost. What to bring. No excuses. No "wait what are we doing again."</div>
+<div class="load-word">LOCKING IT IN...</div>
+<div class="load-sub">Creating the crew page</div>
 </div>
 
-<!-- PLAN -->
-<div class="screen" id="s-recap">
-<nav class="nav"><span class="logo">SORTED</span><span class="nav-badge">SEND IT</span></nav>
-<div class="content">
-  <div class="step-eyebrow">Briefing the troops</div>
-  <div class="step-title">THE PLAN.</div>
-  <p class="step-sub">One message per person. Copy. Paste. Done. You are the most organized you have ever been.</p>
-  <div class="plan-header" id="plan-header"></div>
-  <div class="copy-all-wrap"><button class="copy-all-btn" id="copy-all-btn" onclick="copyAll()">⚡ COPY ALL PLANS TO CLIPBOARD</button></div>
-  <div class="crew-plans" id="crew-plans"></div>
-  <div class="restart-link" onclick="restart()">// plan a different day</div>
-</div>
+<!-- SHARE -->
+<div class="screen" id="s-share">
+  <div class="nav"><div class="logo">SORT<em>ED</em></div></div>
+  <div class="step-body">
+    <h2 class="step-head">IT'S ON.</h2>
+    <div id="share-pitch"></div>
+    <div id="waiting-list"></div>
+    <button id="send-btn" class="btn btn-primary">SEND TO GROUP TEXT</button>
+    <button id="copy-msg-btn" class="btn btn-secondary">COPY MESSAGE</button>
+    <button id="lock-btn" class="btn btn-cyan">LOCK IT IN →</button>
+  </div>
 </div>
 
 <div class="toast" id="toast"></div>
@@ -352,7 +350,7 @@ const RL=['Nobody\'s Getting Hurt','Low Risk','Some Risk','Sign the Waiver','Dan
 const CL=['Under $20/person','$25-50/person','$50-100/person','$100-200/person','Money is no object'];
 const DL=['Up to 10 min','Up to 20 min','Up to 30 min','Up to 45 min','Road trip territory (1hr+)'];
 const LM=['THINKING...','SCOUTING...','RESEARCHING...','LOCKING IN...','ALMOST THERE...'];
-let timer,acts=[],people=[],phones=[],chosen=null,allRecaps=[],crewName='',availability='',planId='';
+let timer,acts=[],people=[],phones=[],chosen=null,crewName='',availability='',planId='';
 
 function goTo(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');window.scrollTo(0,0);}
 function $(id){return document.getElementById(id);}
@@ -451,42 +449,49 @@ function renderResults(){
   });
 }
 
+let pollHandle = null;
+function renderShare(){ /* filled in Task 11 */ }
+function startPolling(){ /* filled in Task 11 */ }
+function stopPolling(){ if (pollHandle) { clearInterval(pollHandle); pollHandle = null; } }
+
 async function pickActivity(idx){
-  chosen=acts[idx];
-  syncPeople();
-  const crew=people.filter(Boolean);
-  const city=$('city-input').value.trim();
-  goTo('s-recap-load');
-  const prompt=`Write a detailed logistics plan for each person in this guys day crew${crewName?' called '+crewName:''}. These go directly into group chat messages.\n\nActivity: ${chosen.name} (${chosen.venueType})\nAvailability: ${availability||'TBD'}\nMeet time: ${chosen.meetTime}\nDuration: ${chosen.duration}\nCost per person: ${chosen.estimatedCost}\nWhat to bring: ${chosen.whatToBring.join(', ')}\nArrival note: ${chosen.parkingNotes||'Check venue website'}\nCity: ${city}\nCrew${crewName?' ('+crewName+')':''}: ${crew.join(', ')}\n\nReturn ONLY valid JSON array, one object per person:\n{"name": "their name", "message": "the full message"}\n\nEach message must include:\n1. Casual opener with name${crewName?', reference the crew name ('+crewName+') naturally':''}\n2. Activity and venue type\n3. Availability/when and meet time\n4. Duration and estimated cost\n5. Numbered bring list\n6. Logistics tip\n7. Reply YES to confirm\n\nFriendly, direct, from the organizer. Under 200 words each.`;
-  try{
-    const t=await callAPI([{role:'user',content:prompt}],2400);
-    allRecaps=JSON.parse(t.replace(/```json|```/g,'').trim());
-    renderRecap(allRecaps);goTo('s-recap');
-  }catch(e){toast('Plan error: '+e.message);goTo('s-results');}
-}
-
-function renderRecap(recaps){
-  $('plan-header').innerHTML=`<div class="plan-eyebrow">Locked In</div><div class="plan-name">${chosen.name}</div><div class="plan-meta">${availability||'Date TBD'}<br>${chosen.meetTime} &middot; ${chosen.duration} &middot; ${chosen.estimatedCost}</div>`;
-  const container=$('crew-plans');container.innerHTML='';
-  recaps.forEach(r=>{
-    const card=document.createElement('div');card.className='plan-card';
-    const safe=r.message.replace(/\\/g,'\\\\').replace(/`/g,'\\`');
-    card.innerHTML=`<div class="plan-name-bar">${r.name}</div><div class="plan-text">${r.message}</div><button class="copy-plan-btn" onclick="copyMsg(this,\`${safe}\`)">Copy to clipboard</button>`;
-    container.appendChild(card);
-  });
-}
-
-function copyMsg(btn,text){navigator.clipboard.writeText(text).then(()=>{btn.textContent='Copied!';btn.classList.add('copied');setTimeout(()=>{btn.textContent='Copy to clipboard';btn.classList.remove('copied');},2000)});}
-
-function copyAll(){
-  const all=allRecaps.map(r=>`--- ${r.name.toUpperCase()} ---\n${r.message}`).join('\n\n');
-  navigator.clipboard.writeText(all).then(()=>{const btn=$('copy-all-btn');btn.textContent='⚡ ALL COPIED!';setTimeout(()=>btn.textContent='⚡ COPY ALL PLANS TO CLIPBOARD',2000);});
+  chosen = acts[idx];
+  goTo('s-share-load');
+  try {
+    const res = await fetch(`${API}/api/plan`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        crewName,
+        crew: people.map((n,i) => ({ name: n, phone: phones[i] })),
+        city: $('city-input').value.trim(),
+        driveDistance: parseInt($('sl-dist').value, 10),
+        vibe: {
+          adventure: parseInt($('sl-adv').value, 10),
+          risk: parseInt($('sl-risk').value, 10),
+          cost: parseInt($('sl-cost').value, 10)
+        },
+        activity: chosen,
+        organizerAvailability: availability
+      })
+    });
+    if (!res.ok) throw new Error(`create failed ${res.status}`);
+    const data = await res.json();
+    planId = data.id;
+    renderShare();
+    goTo('s-share');
+    startPolling();
+  } catch (err) {
+    console.error('[sorted] create plan failed:', err);
+    toast('Could not create the plan. Try again.');
+    goTo('s-results');
+  }
 }
 
 function restart(){
   $('crew-list').innerHTML='';addPerson();
   $('city-input').value='';$('avail-input').value='';$('sl-dist').value=2;$('sl-adv').value=3;$('sl-risk').value=2;$('sl-cost').value=2;
-  updateLoc();updateVibe();acts=[];chosen=null;people=[];allRecaps=[];availability='';
+  updateLoc();updateVibe();acts=[];chosen=null;people=[];availability='';planId='';
   goTo('s-land');
 }
 
