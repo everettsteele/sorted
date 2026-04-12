@@ -237,7 +237,8 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;bac
   </div>
 </div>
 <div class="cta-bar">
-  <button class="btn btn-primary" onclick="goTo('s-crew')">LET'S GO →</button>
+  <button class="btn btn-primary" onclick="startFlow('discover')">FIND SOMETHING FOR US →</button>
+  <button class="btn btn-secondary" onclick="startFlow('known')">I'VE GOT A PLAN — LINE UP THE DAY →</button>
 </div>
 </div>
 
@@ -259,6 +260,28 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;bac
 <div class="cta-bar">
   <button class="btn btn-primary" onclick="nextFromCrew()">NEXT →</button>
   <button class="btn btn-secondary" onclick="goTo('s-land')">← BACK</button>
+</div>
+</div>
+
+<!-- KNOWN PLAN -->
+<div class="screen" id="s-plan-text">
+<nav class="nav"><span class="logo">SORTED</span><span class="nav-badge">YOUR PLAN</span></nav>
+<div class="content">
+  <div class="step-eyebrow">What are we doing?</div>
+  <div class="step-title">DROP THE PLAN.</div>
+  <p class="step-sub">Tell the crew what's up. One line, a paragraph — whatever. This exact text goes in the group text.</p>
+  <div class="field" style="margin-top:12px">
+    <textarea class="field-input" id="plan-text-input" rows="4" placeholder='e.g. "Skeet shooting at Big Red Oak Plantation, Saturday afternoon"'></textarea>
+  </div>
+  <div class="field">
+    <label class="field-label">When are YOU available?</label>
+    <textarea class="field-input" id="plan-avail-input" rows="3" placeholder='A date, a few dates, or a slot — "4/18", "any Sat after 1pm", "weekends in May but not the 25th"'></textarea>
+  </div>
+  <div class="err" id="plan-text-err"></div>
+</div>
+<div class="cta-bar">
+  <button class="btn btn-primary" onclick="submitKnownPlan()">SHARE IT →</button>
+  <button class="btn btn-secondary" onclick="goTo('s-crew')">← BACK</button>
 </div>
 </div>
 
@@ -437,7 +460,7 @@ const RL=['Nobody\'s Getting Hurt','Low Risk','Some Risk','Sign the Waiver','Dan
 const CL=['Under $20/person','$25-50/person','$50-100/person','$100-200/person','Money is no object'];
 const DL=['Up to 10 min','Up to 20 min','Up to 30 min','Up to 45 min','Road trip territory (1hr+)'];
 const LM=['THINKING...','SCOUTING...','RESEARCHING...','LOCKING IN...','ALMOST THERE...'];
-let timer,acts=[],people=[],phones=[],chosen=null,crewName='',availability='',planId='';
+let timer,acts=[],people=[],phones=[],chosen=null,crewName='',availability='',planId='',knownPlanMode=false,knownPlanText='';
 
 function goTo(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');window.scrollTo(0,0);}
 function $(id){return document.getElementById(id);}
@@ -453,12 +476,14 @@ function smsHref(phoneList, body){
 
 function shareInviteMessage(plan){
   const url = `${location.origin}${location.pathname}?p=${plan.id}`;
-  return `${plan.crewName || 'Crew'}: ${plan.activity.name} in ${plan.city}. Weigh in on dates: ${url}`;
+  const where = plan.city ? ` in ${plan.city}` : '';
+  return `${plan.crewName || 'Crew'}: ${plan.activity.name}${where}. Weigh in on dates: ${url}`;
 }
 
 function shareFinalMessage(plan){
   const url = `${location.origin}${location.pathname}?p=${plan.id}`;
-  return `${plan.crewName || 'Crew'}: LOCKED IN — ${plan.activity.name} in ${plan.city}, ${plan.finalDate}. Plan: ${url}`;
+  const where = plan.city ? ` in ${plan.city}` : '';
+  return `${plan.crewName || 'Crew'}: LOCKED IN — ${plan.activity.name}${where}, ${plan.finalDate}. Plan: ${url}`;
 }
 
 function renderDashboard(plan){
@@ -495,6 +520,11 @@ function syncPeople(){
     phones.push(p ? p.value.trim() : '');
   });
 }
+function startFlow(mode){
+  knownPlanMode = (mode === 'known');
+  goTo('s-crew');
+}
+
 function nextFromCrew(){
   syncPeople();
   const err=$('crew-err');
@@ -510,7 +540,43 @@ function nextFromCrew(){
   phones=rows.map(r=>r.phone);
   err.style.display='none';
   crewName=$('crew-name-input').value.trim();
-  goTo('s-loc');
+  goTo(knownPlanMode ? 's-plan-text' : 's-loc');
+}
+
+async function submitKnownPlan(){
+  const planText=$('plan-text-input').value.trim();
+  const avail=$('plan-avail-input').value.trim();
+  const err=$('plan-text-err');
+  if(!planText){err.textContent='⚠ Tell the crew what the plan is.';err.style.display='block';return;}
+  if(!avail){err.textContent='⚠ Tell us when YOU are available.';err.style.display='block';return;}
+  err.style.display='none';
+  knownPlanText=planText;
+  availability=avail;
+  chosen={name:planText, description:planText, blurb:planText};
+  goTo('s-share-load');
+  try {
+    const res=await fetch(`${API}/api/plan`, {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({
+        crewName,
+        crew: people.map((n,i)=>({name:n,phone:phones[i]})),
+        activity: chosen,
+        organizerAvailability: availability,
+        knownPlan: true
+      })
+    });
+    if(!res.ok) throw new Error(`create failed ${res.status}`);
+    const data=await res.json();
+    planId=data.id;
+    renderShare();
+    goTo('s-share');
+    startPolling();
+  } catch(e){
+    console.error('[sorted] known-plan create failed:', e);
+    toast('Could not create the plan. Try again.');
+    goTo('s-plan-text');
+  }
 }
 
 function updateLoc(){$('dist-label').textContent=DL[+$('sl-dist').value-1];}
@@ -570,7 +636,9 @@ function renderResults(){
 let pollHandle = null;
 
 function renderShare(){
-  $('share-pitch').innerHTML = `<h4>${escapeHtml(chosen.name)}</h4><div>${escapeHtml(chosen.description||chosen.blurb||'')}</div>`;
+  const desc = chosen.description || chosen.blurb || '';
+  const descHtml = (desc && desc !== chosen.name) ? `<div>${escapeHtml(desc)}</div>` : '';
+  $('share-pitch').innerHTML = `<h4>${escapeHtml(chosen.name)}</h4>${descHtml}`;
   const city = $('city-input').value.trim();
   const msg = shareInviteMessage({ id: planId, crewName, activity: chosen, city });
   $('send-btn').onclick = () => { window.location.href = smsHref(phones, msg); };
@@ -631,17 +699,24 @@ function renderFinal(plan){
   $('final-reason').textContent = plan.finalReason || '';
   const host = $('final-crew-plans');
   host.innerHTML = '';
-  (plan.finalPlan || []).forEach(p => {
+  if (plan.knownPlan) {
     const card = document.createElement('div');
     card.className = 'crew-plan-card';
-    card.innerHTML = `
-      <h4 class="plan-person-name">${escapeHtml(p.name)}</h4>
-      <div class="plan-line"><span>Drive:</span> ${escapeHtml(p.driveTime||'')}</div>
-      <div class="plan-line"><span>Bring:</span> ${escapeHtml(p.bring||'')}</div>
-      <div class="plan-line"><span>Notes:</span> ${escapeHtml(p.notes||'')}</div>
-    `;
+    card.innerHTML = `<h4 class="plan-person-name">The Plan</h4><div class="plan-line" style="color:var(--white)">${escapeHtml(plan.activity.name)}</div>`;
     host.appendChild(card);
-  });
+  } else {
+    (plan.finalPlan || []).forEach(p => {
+      const card = document.createElement('div');
+      card.className = 'crew-plan-card';
+      card.innerHTML = `
+        <h4 class="plan-person-name">${escapeHtml(p.name)}</h4>
+        <div class="plan-line"><span>Drive:</span> ${escapeHtml(p.driveTime||'')}</div>
+        <div class="plan-line"><span>Bring:</span> ${escapeHtml(p.bring||'')}</div>
+        <div class="plan-line"><span>Notes:</span> ${escapeHtml(p.notes||'')}</div>
+      `;
+      host.appendChild(card);
+    });
+  }
 
   const msg = shareFinalMessage(plan);
   $('final-send-btn').onclick = () => { window.location.href = smsHref(phones, msg); };
@@ -762,6 +837,13 @@ function renderVoterFinal(plan){
   $('v-final-date').textContent = plan.finalDate || '';
   $('v-final-reason').textContent = plan.finalReason || '';
   const host = $('v-final-crew-plans'); host.innerHTML = '';
+  if (plan.knownPlan) {
+    const card = document.createElement('div');
+    card.className = 'crew-plan-card';
+    card.innerHTML = `<h4 class="plan-person-name">The Plan</h4><div class="plan-line" style="color:var(--white)">${escapeHtml(plan.activity.name)}</div>`;
+    host.appendChild(card);
+    return;
+  }
   (plan.finalPlan || []).forEach(p => {
     const card = document.createElement('div');
     card.className = 'crew-plan-card';
