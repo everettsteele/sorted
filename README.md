@@ -1,3 +1,14 @@
+## Backend env vars
+
+Beyond the existing `ANTHROPIC_API_KEY`, `sorted-api` now needs:
+
+- `CLOUDFLARE_ACCOUNT_ID`
+- `CLOUDFLARE_KV_NAMESPACE_ID` — create a KV namespace and paste its ID here
+- `CLOUDFLARE_API_TOKEN` — scoped: `Account → Workers KV Storage → Edit`
+- `PUBLIC_BASE_URL` (optional) — overrides the default `https://sorted.neverstill.llc` used when the API returns shareable plan URLs
+
+Set these as Railway Variables, not in source.
+
 ## Running Your Own Instance
 
 This repo contains no API keys. To run your own instance:
