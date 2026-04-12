@@ -102,13 +102,7 @@ h1 .line-orange{background:linear-gradient(90deg,var(--pink),var(--cyan));-webki
 .field-input{width:100%;background:var(--navy2);border:1px solid rgba(255,255,255,0.12);border-radius:var(--radius);padding:13px 15px;color:var(--white);font-family:'Outfit',sans-serif;font-size:15px;font-weight:500;outline:none;transition:all 0.15s}
 .field-input:focus{border-color:var(--cyan);box-shadow:0 0 0 2px rgba(0,240,255,0.12)}
 .field-input::placeholder{color:rgba(255,255,255,0.2)}
-input[type=date].field-input{cursor:pointer;color-scheme:dark}
-.date-toggle-link{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:0.07em;text-decoration:none;cursor:pointer;color:var(--cyan);margin-top:9px;display:inline-block;font-weight:700;text-transform:uppercase;border-bottom:1px solid rgba(0,240,255,0.3);padding-bottom:1px}
-.date-options{display:none;margin-top:14px;padding:14px;border:1px solid rgba(0,240,255,0.15);border-radius:var(--radius);background:rgba(0,240,255,0.04)}
-.date-options.open{display:block}
-.vote-note{font-family:'Space Mono',monospace;font-size:8px;line-height:1.5;margin-bottom:12px;color:var(--cyan);letter-spacing:0.04em;opacity:0.7}
-.date-opt-row{margin-bottom:10px}
-.date-opt-row:last-child{margin-bottom:0}
+textarea.field-input{resize:vertical;min-height:64px;font-family:'Outfit',sans-serif}
 
 /* SLIDERS */
 .slider-block{padding:18px;border:1px solid rgba(255,255,255,0.07);border-radius:var(--radius);background:var(--navy2);margin-bottom:14px;position:relative;overflow:hidden}
@@ -254,16 +248,11 @@ input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;bac
 <div class="content">
   <div class="step-eyebrow">Step 2 — Lock the target</div>
   <div class="step-title">WHEN + WHERE?</div>
-  <p class="step-sub">Pick a date and your city. We'll find real venues. Not suggestions. Real places you can actually go.</p>
+  <p class="step-sub">Tell us when you're free and your city. We'll find real venues. Not suggestions. Real places you can actually go.</p>
   <div class="field-group">
-    <label class="field-label">Date</label>
-    <input type="date" class="field-input" id="date-input">
-    <span class="date-toggle-link" id="date-toggle" onclick="toggleDateOptions()">Not sure? Suggest 3 dates for a crew vote →</span>
-    <div class="date-options" id="date-options">
-      <p class="vote-note">// Each plan ends with a date vote. First to 3 confirmations wins.</p>
-      <div class="date-opt-row"><label class="field-label">Option 1</label><input type="date" class="field-input" id="date-opt-1"></div>
-      <div class="date-opt-row"><label class="field-label">Option 2</label><input type="date" class="field-input" id="date-opt-2"></div>
-      <div class="date-opt-row"><label class="field-label">Option 3</label><input type="date" class="field-input" id="date-opt-3"></div>
+    <div class="field">
+      <label class="field-label">When are YOU available?</label>
+      <textarea class="field-input" id="avail-input" rows="3" placeholder='A date, a few dates, or a slot that works — e.g. "4/18", "any Sat after 1pm", "weekends in May but not the 25th"'></textarea>
     </div>
   </div>
   <div class="field-group">
@@ -368,8 +357,6 @@ let timer,acts=[],people=[],phones=[],chosen=null,allRecaps=[],crewName='',avail
 function goTo(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');window.scrollTo(0,0);}
 function $(id){return document.getElementById(id);}
 
-function nextSat(){const d=new Date(),day=d.getDay(),diff=(6-day+7)%7||7;d.setDate(d.getDate()+diff);return d.toISOString().split('T')[0];}
-
 function toast(msg){const t=$('toast');t.textContent=msg;t.style.display='block';setTimeout(()=>t.style.display='none',4000);}
 
 function addPerson(n=''){
@@ -410,29 +397,17 @@ function nextFromCrew(){
   goTo('s-loc');
 }
 
-function toggleDateOptions(){
-  voteMode=!voteMode;
-  $('date-options').className='date-options'+(voteMode?' open':'');
-  $('date-input').style.display=voteMode?'none':'block';
-  $('date-toggle').innerHTML=voteMode?'Never mind, I\'ll pick one date ←':'Not sure? Suggest 3 dates for a crew vote →';
-}
-
-function formatDate(d){if(!d)return '';const dt=new Date(d+'T12:00:00');return dt.toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric'});}
-
-function getDateDisplay(){
-  if(voteMode){const opts=[$('date-opt-1').value,$('date-opt-2').value,$('date-opt-3').value].filter(Boolean);return opts.length?opts.map(formatDate).join(' or '):null;}
-  const v=$('date-input').value;return v?formatDate(v):null;
-}
-
-function getVoteOptions(){
-  if(!voteMode)return null;
-  return [$('date-opt-1').value,$('date-opt-2').value,$('date-opt-3').value].filter(Boolean).map(formatDate);
-}
-
 function updateLoc(){$('dist-label').textContent=DL[+$('sl-dist').value-1];}
 function nextFromLoc(){
-  const city=$('city-input').value.trim();const e=$('loc-err');
-  if(!city){e.style.display='block';return;}e.style.display='none';updateVibe();goTo('s-vibe');
+  const city=$('city-input').value.trim();
+  const avail=$('avail-input').value.trim();
+  const err=$('loc-err');
+  if(!city){err.textContent='⚠ Enter your city to continue.';err.style.display='block';return;}
+  if(!avail){err.textContent='⚠ Enter your availability to continue.';err.style.display='block';return;}
+  err.style.display='none';
+  availability=avail;
+  updateVibe();
+  goTo('s-vibe');
 }
 
 function updateVibe(){
@@ -458,9 +433,8 @@ async function generate(){
   const dist=DL[+$('sl-dist').value-1];
   const a=+$('sl-adv').value,r=+$('sl-risk').value,c=+$('sl-cost').value;
   const crew=people.filter(Boolean);
-  const dateDisplay=getDateDisplay()||'a day TBD';
   goTo('s-load');cycleMsgs();
-  const prompt=`You are a guys day out planner. Find real local venue experiences.\n\nLocation: ${city}\nDate: ${dateDisplay}\nDrive range: ${dist}\nAdventure level: ${a}/5 (${AL[a-1]})\nRisk level: ${r}/5 (${RL[r-1]})\nBudget: ${c}/5 (${CL[c-1]})\nGroup size: ${crew.length} guys${crewName?'\\nCrew name: '+crewName:''}\n\nGenerate exactly 3 activity options at real venue types: TopGolf, go-kart tracks, paintball, axe throwing bars, escape rooms, bowling alleys, batting cages, shooting ranges, trampoline parks, laser tag, rock climbing, whitewater rafting, mini golf bars, dueling piano bars, comedy clubs, sports bars with games, arcades, pool halls, live sports, food halls, brewery tours. NO home activities.\n\nReturn ONLY valid JSON array, 3 objects:\n- name: punchy activity name\n- venueType: category\n- tagline: one punchy sentence max 10 words\n- description: 2-3 sentences why this rocks for guys day\n- whatToBring: array of 3-5 short strings\n- meetTime: like "10:00 AM"\n- duration: like "3-4 hours"\n- estimatedCost: like "$45-65/person"\n- parkingNotes: one short arrival/logistics note\n- wildCard: boolean (exactly one true)`;
+  const prompt=`You are a guys day out planner. Find real local venue experiences.\n\nLocation: ${city}\nAvailability: ${availability||'TBD'}\nDrive range: ${dist}\nAdventure level: ${a}/5 (${AL[a-1]})\nRisk level: ${r}/5 (${RL[r-1]})\nBudget: ${c}/5 (${CL[c-1]})\nGroup size: ${crew.length} guys${crewName?'\\nCrew name: '+crewName:''}\n\nGenerate exactly 3 activity options at real venue types: TopGolf, go-kart tracks, paintball, axe throwing bars, escape rooms, bowling alleys, batting cages, shooting ranges, trampoline parks, laser tag, rock climbing, whitewater rafting, mini golf bars, dueling piano bars, comedy clubs, sports bars with games, arcades, pool halls, live sports, food halls, brewery tours. NO home activities.\n\nReturn ONLY valid JSON array, 3 objects:\n- name: punchy activity name\n- venueType: category\n- tagline: one punchy sentence max 10 words\n- description: 2-3 sentences why this rocks for guys day\n- whatToBring: array of 3-5 short strings\n- meetTime: like "10:00 AM"\n- duration: like "3-4 hours"\n- estimatedCost: like "$45-65/person"\n- parkingNotes: one short arrival/logistics note\n- wildCard: boolean (exactly one true)`;
   try{
     const t=await callAPI([{role:'user',content:prompt}],1400);
     acts=JSON.parse(t.replace(/```json|```/g,'').trim());
@@ -482,11 +456,8 @@ async function pickActivity(idx){
   syncPeople();
   const crew=people.filter(Boolean);
   const city=$('city-input').value.trim();
-  const dateDisplay=getDateDisplay()||'TBD';
-  const voteOpts=getVoteOptions();
-  const voteInstruction=voteOpts&&voteOpts.length>1?`\n\nEnd each message with a date vote:\n"VOTE: Reply 1 for ${voteOpts[0]}${voteOpts[1]?', 2 for '+voteOpts[1]:''}${voteOpts[2]?', 3 for '+voteOpts[2]:''}."`:'';
   goTo('s-recap-load');
-  const prompt=`Write a detailed logistics plan for each person in this guys day crew${crewName?' called '+crewName:''}. These go directly into group chat messages.\n\nActivity: ${chosen.name} (${chosen.venueType})\nDate: ${dateDisplay}\nMeet time: ${chosen.meetTime}\nDuration: ${chosen.duration}\nCost per person: ${chosen.estimatedCost}\nWhat to bring: ${chosen.whatToBring.join(', ')}\nArrival note: ${chosen.parkingNotes||'Check venue website'}\nCity: ${city}\nCrew${crewName?' ('+crewName+')':''}: ${crew.join(', ')}${voteInstruction}\n\nReturn ONLY valid JSON array, one object per person:\n{"name": "their name", "message": "the full message"}\n\nEach message must include:\n1. Casual opener with name${crewName?', reference the crew name ('+crewName+') naturally':''}\n2. Activity and venue type\n3. Date and meet time\n4. Duration and estimated cost\n5. Numbered bring list\n6. Logistics tip\n7. Reply YES to confirm${voteOpts&&voteOpts.length>1?'\n8. The date vote line.':''}\n\nFriendly, direct, from the organizer. Under 200 words each.`;
+  const prompt=`Write a detailed logistics plan for each person in this guys day crew${crewName?' called '+crewName:''}. These go directly into group chat messages.\n\nActivity: ${chosen.name} (${chosen.venueType})\nAvailability: ${availability||'TBD'}\nMeet time: ${chosen.meetTime}\nDuration: ${chosen.duration}\nCost per person: ${chosen.estimatedCost}\nWhat to bring: ${chosen.whatToBring.join(', ')}\nArrival note: ${chosen.parkingNotes||'Check venue website'}\nCity: ${city}\nCrew${crewName?' ('+crewName+')':''}: ${crew.join(', ')}\n\nReturn ONLY valid JSON array, one object per person:\n{"name": "their name", "message": "the full message"}\n\nEach message must include:\n1. Casual opener with name${crewName?', reference the crew name ('+crewName+') naturally':''}\n2. Activity and venue type\n3. Availability/when and meet time\n4. Duration and estimated cost\n5. Numbered bring list\n6. Logistics tip\n7. Reply YES to confirm\n\nFriendly, direct, from the organizer. Under 200 words each.`;
   try{
     const t=await callAPI([{role:'user',content:prompt}],2400);
     allRecaps=JSON.parse(t.replace(/```json|```/g,'').trim());
@@ -495,7 +466,7 @@ async function pickActivity(idx){
 }
 
 function renderRecap(recaps){
-  $('plan-header').innerHTML=`<div class="plan-eyebrow">Locked In</div><div class="plan-name">${chosen.name}</div><div class="plan-meta">${getDateDisplay()||'Date TBD'}<br>${chosen.meetTime} &middot; ${chosen.duration} &middot; ${chosen.estimatedCost}</div>`;
+  $('plan-header').innerHTML=`<div class="plan-eyebrow">Locked In</div><div class="plan-name">${chosen.name}</div><div class="plan-meta">${availability||'Date TBD'}<br>${chosen.meetTime} &middot; ${chosen.duration} &middot; ${chosen.estimatedCost}</div>`;
   const container=$('crew-plans');container.innerHTML='';
   recaps.forEach(r=>{
     const card=document.createElement('div');card.className='plan-card';
@@ -514,14 +485,12 @@ function copyAll(){
 
 function restart(){
   $('crew-list').innerHTML='';addPerson();
-  $('city-input').value='';$('sl-dist').value=2;$('sl-adv').value=3;$('sl-risk').value=2;$('sl-cost').value=2;
-  updateLoc();updateVibe();acts=[];chosen=null;people=[];allRecaps=[];
-  $('date-input').value=nextSat();
-  if(voteMode)toggleDateOptions();
+  $('city-input').value='';$('avail-input').value='';$('sl-dist').value=2;$('sl-adv').value=3;$('sl-risk').value=2;$('sl-cost').value=2;
+  updateLoc();updateVibe();acts=[];chosen=null;people=[];allRecaps=[];availability='';
   goTo('s-land');
 }
 
-addPerson();updateLoc();updateVibe();$('date-input').value=nextSat();
+addPerson();updateLoc();updateVibe();
 </script>
 </body>
 </html>
